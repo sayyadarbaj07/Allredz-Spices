@@ -16,22 +16,9 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (
-        !origin ||
-        origin.startsWith("http://localhost") ||
-        origin.endsWith(".vercel.app") ||  // ✅ All Vercel preview & production URLs
-        allowedOrigins.includes(origin)
-      ) {
-        callback(null, true);
-      } else {
-        callback(new Error(`CORS: ${origin} not allowed`));
-      }
-    },
+    origin: true, // allow all origins (temporary fix)
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 
 app.use(express.json());
