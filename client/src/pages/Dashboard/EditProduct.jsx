@@ -42,7 +42,9 @@ const EditProduct = () => {
           price: product.sizes?.[0]?.price || "",
           category: product.category || "", // Optional
           imageFile: null,
-          imagePreview: product.image || hero,
+          imagePreview: product.image?.startsWith("/uploads/")
+            ? `${import.meta.env.VITE_API_URL || ""}${product.image}`
+            : product.image || hero,
         });
       }
     }

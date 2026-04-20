@@ -32,7 +32,11 @@ const ProductList = () => {
             className="bg-white shadow-md rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300"
           >
             <img
-              src={product.image || "/images/default.jpg"}
+              src={
+                product.image?.startsWith("/uploads/")
+                  ? `${import.meta.env.VITE_API_URL || ""}${product.image}`
+                  : product.image || "/images/default.jpg"
+              }
               alt={product.name}
               className="w-full h-48 object-cover"
             />

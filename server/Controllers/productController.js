@@ -1,30 +1,14 @@
 const Product = require("../models/Product");
 const { validationResult } = require("express-validator");
 
-// Get all products
+// ✅ Get all products
 exports.getallProduct = async (req, res) => {
   try {
     const result = await Product.find();
-    const BASE_URL = process.env.BASE_URL || "http://localhost:5000";
-
-    // Return full image URLs so frontend doesn't need to construct them
-    const products = result.map((p) => {
-      const obj = p.toObject();
-      if (obj.image) {
-        // Already a full URL (from old Render data) — keep it
-        if (obj.image.startsWith("http")) {
-          return obj;
-        }
-        // Normalize backslashes and prepend base URL
-        obj.image = `${BASE_URL}/${obj.image.replace(/\\/g, "/")}`;
-      }
-      return obj;
-    });
-
     res.status(200).json({
       success: true,
       message: "Products fetched successfully",
-      result: products,
+      result: result,
     });
   } catch (error) {
     res.status(500).json({
@@ -34,16 +18,14 @@ exports.getallProduct = async (req, res) => {
   }
 };
 
-// Add product (with image upload)
+// ✅ Add product
 exports.addProduct = async (req, res) => {
   try {
-    // Validation check
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ success: false, errors: errors.array() });
     }
 
-    // Check if file exists
     if (!req.file) {
       return res.status(400).json({
         success: false,
@@ -58,7 +40,7 @@ exports.addProduct = async (req, res) => {
       description,
       category,
       sizes: sizes ? JSON.parse(sizes) : [],
-      image: req.file.path.replace(/\\/g, "/"),
+      image: `/uploads/${req.file.filename}`, // 🔥 FIXED
     });
 
     const savedProduct = await product.save();
@@ -77,18 +59,16 @@ exports.addProduct = async (req, res) => {
   }
 };
 
-// Update product (with optional image upload)
+// ✅ Update product
 exports.updateProduct = async (req, res) => {
   try {
     const { productid } = req.params;
     const updateData = { ...req.body };
 
-    // Optional image
     if (req.file) {
-      updateData.image = req.file.path.replace(/\\/g, "/");
+      updateData.image = `/uploads/${req.file.filename}`; // 🔥 FIXED
     }
 
-    // Parse sizes if present
     if (updateData.sizes) {
       updateData.sizes = JSON.parse(updateData.sizes);
     }
@@ -96,7 +76,7 @@ exports.updateProduct = async (req, res) => {
     const updatedProduct = await Product.findByIdAndUpdate(
       productid,
       updateData,
-      { new: true }
+      { new: true },
     );
 
     if (!updatedProduct) {
@@ -120,10 +100,11 @@ exports.updateProduct = async (req, res) => {
   }
 };
 
-// Delete product
+// ✅ Delete product
 exports.deleteProduct = async (req, res) => {
   try {
     const { productid } = req.params;
+
     const deletedProduct = await Product.findByIdAndDelete(productid);
 
     if (!deletedProduct) {

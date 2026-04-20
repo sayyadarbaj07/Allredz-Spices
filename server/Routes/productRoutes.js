@@ -14,7 +14,7 @@ const {
 // ✅ Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // folder to save images
+    cb(null, path.join(__dirname, "../uploads")); // 🔥 FIXED PATH
   },
   filename: function (req, file, cb) {
     const uniqueName = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -33,7 +33,7 @@ router.post(
   verifyToken,
   isAdmin,
   upload.single("image"),
-  addProduct
+  addProduct,
 );
 
 // Update product (Admin only) with optional image upload
@@ -42,7 +42,7 @@ router.put(
   verifyToken,
   isAdmin,
   upload.single("image"), // optional image
-  updateProduct
+  updateProduct,
 );
 
 // Delete product (Admin only)
@@ -50,7 +50,7 @@ router.delete(
   "/delete-product/:productid",
   verifyToken,
   isAdmin,
-  deleteProduct
+  deleteProduct,
 );
 
 module.exports = router;

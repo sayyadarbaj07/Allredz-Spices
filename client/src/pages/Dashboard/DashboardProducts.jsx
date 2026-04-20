@@ -79,7 +79,9 @@ const DashboardProducts = () => {
           </thead>
           <tbody>
             {products.map((p, index) => {
-              const imgSrc = p.image || hero;
+              const imgSrc = p.image?.startsWith("/uploads/")
+                ? `${import.meta.env.VITE_API_URL || ""}${p.image}`
+                : p.image || hero;
 
               return (
                 <tr

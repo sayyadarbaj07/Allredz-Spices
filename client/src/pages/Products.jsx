@@ -5,11 +5,12 @@ import { useGetAllProductsQuery } from "../redux/Api/productAPi";
 import { useNavigate } from "react-router-dom";
 
 const Products = () => {
+  // Logic remains identical to your original file
   const { data, error, isLoading } = useGetAllProductsQuery();
   const navigate = useNavigate();
   const [cartCount, setCartCount] = useState(0);
   const [selectedSize, setSelectedSize] = useState({});
-  const [toast, setToast] = useState(null); // { message: "text" }
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -40,121 +41,167 @@ const Products = () => {
       });
 
     localStorage.setItem("cart", JSON.stringify(cart));
-    // Trigger storage event for Navbar to update
     window.dispatchEvent(new Event("storage"));
     setCartCount(cart.reduce((sum, item) => sum + item.quantity, 0));
 
-    // ✅ Show toast alert
     setToast({ message: `${product.name} added to cart!` });
-    setTimeout(() => setToast(null), 2000); // hide after 2 sec
+    setTimeout(() => setToast(null), 2000);
   };
 
   if (isLoading)
     return (
-      <div className="text-center py-20 text-xl text-red-700 font-bold">Loading...</div>
+      <div className="flex justify-center items-center h-screen bg-[#f5e6d3]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-red-700"></div>
+      </div>
     );
+
   if (error)
     return (
-      <div className="text-center py-20 text-xl text-red-700 font-bold">
-        Failed to load products ❌
+      <div className="text-center py-24 px-6 min-h-screen bg-[#faf9f6] flex flex-col items-center justify-center">
+        <div className="text-6xl mb-4">⚠️</div>
+        <h2 className="text-2xl font-bold text-red-900 mb-2">Connection Issues</h2>
+        <p className="text-gray-600 mb-6">We couldn't connect to the spice cellar. Please check your connection.</p>
+        <button 
+          onClick={() => window.location.reload()}
+          className="bg-red-700 text-white px-8 py-3 rounded-full font-bold hover:bg-red-800 transition shadow-lg"
+        >
+          Try Again
+        </button>
       </div>
     );
 
   return (
-    <div className="py-24 px-6 bg-[#f5e6d3] min-h-screen relative font-sans">
+    <div className="py-24 px-6 bg-[#faf9f6] min-h-screen relative font-sans">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-red-100/30 rounded-full blur-3xl -z-10" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-yellow-100/20 rounded-full blur-3xl -z-10" />
+
       {/* Toast Alert */}
       <AnimatePresence>
         {toast && (
           <motion.div
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -50 }}
-            className="fixed top-24 left-1/2 -translate-x-1/2 bg-[#8b1c1c] text-white px-8 py-4 rounded-2xl shadow-2xl z-[60] font-bold border-2 border-white/20"
+            initial={{ opacity: 0, y: -50, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: -50, x: "-50%" }}
+            className="fixed top-8 left-1/2 bg-[#2d0a0a] text-white px-8 py-4 rounded-2xl shadow-2xl z-[100] font-bold border border-white/10 flex items-center gap-3"
           >
-            {toast.message}
+            <span className="text-xl">✨</span> {toast.message}
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Header */}
-      <div className="max-w-7xl mx-auto mb-16 text-center">
-        <h1 className="text-4xl md:text-6xl font-black text-red-900 tracking-tighter uppercase mb-4">
-          Exclusive <span className="text-red-600">Products</span>
-        </h1>
-        <div className="w-24 h-1.5 bg-red-600 mx-auto rounded-full" />
+      <div className="max-w-7xl mx-auto mb-20 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="text-red-700 font-extrabold uppercase tracking-[0.2em] text-sm mb-4 block">Our Collection</span>
+          <h1 className="text-5xl md:text-7xl font-serif text-gray-900 mb-6 tracking-tight">
+            Premium <span className="italic text-red-800">Spices</span>
+          </h1>
+          <p className="max-w-2xl mx-auto text-gray-600 text-lg leading-relaxed">
+            Elevate your culinary creations with our hand-picked, authentic spices 
+            sourced directly from the most fertile regions of India.
+          </p>
+        </motion.div>
       </div>
 
-      {/* Products Grid */}
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
-        {products.map((product) => (
-          <div
+      {/* Products Grid - MAXIMIZED DENSITY */}
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 max-w-[95rem] mx-auto px-2 md:px-0">
+        {products.map((product, idx) => (
+          <motion.div
             key={product._id}
-            className="group relative bg-[#fffdf0] rounded-[2.5rem] shadow-2xl hover:shadow-red-950/50 border-4 border-transparent hover:border-yellow-400/50 overflow-hidden transform hover:-translate-y-3 transition-all duration-500 flex flex-col"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: idx * 0.1 }}
+            className="group relative flex flex-col"
           >
-            {/* Image Container */}
-            <div className="bg-gradient-to-br from-white to-gray-100 flex justify-center items-center py-10 px-6 relative overflow-hidden">
-              <div className="absolute inset-0 bg-red-600 opacity-0 group-hover:opacity-5 transition-opacity duration-500" />
-              <img
-                src={product.image || hero}
-                alt={product.name}
-                className="w-full h-48 sm:h-56 object-contain filter drop-shadow-2xl group-hover:scale-110 transition-transform duration-700 z-10"
-              />
-            </div>
+            {/* Card Main Container - HIGH DENSITY */}
+            <div className="bg-white rounded-[1.2rem] p-2.5 shadow-[0_2px_10px_rgba(0,0,0,0.02)] group-hover:shadow-[0_12px_24px_rgba(139,28,28,0.06)] transition-all duration-500 flex flex-col flex-grow border border-gray-100 overflow-hidden">
+              
+              {/* Image Area - COMPACT */}
+              <div className="relative h-40 rounded-[0.8rem] bg-[#fcfcfc] overflow-hidden flex items-center justify-center p-4 transition-colors duration-500 group-hover:bg-[#fffdfd]">
+                {/* Decorative Shape */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-red-50/50 to-transparent opacity-50" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-white rounded-full shadow-inner group-hover:scale-110 transition-transform duration-700" />
+                
+                <img
+                  src={
+                    product.image?.startsWith("/uploads/")
+                      ? `${import.meta.env.VITE_API_URL || ""}${product.image}`
+                      : product.image || hero
+                  }
+                  alt={product.name}
+                  className="relative z-10 w-full h-full object-contain filter drop-shadow-[0_15px_15px_rgba(0,0,0,0.1)] group-hover:scale-110 transition-transform duration-700"
+                />
 
-            {/* Content Container */}
-            <div className="p-8 flex flex-col flex-grow">
-              <h3 className="text-2xl font-black text-gray-900 leading-tight mb-2">
-                {product.name}
-              </h3>
+                {/* Badges */}
+                <div className="absolute top-3 left-3 flex flex-col gap-2 z-20">
+                  <span className="bg-white text-red-900 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shadow-sm border border-gray-100">
+                    {product.category || "Organic"}
+                  </span>
+                </div>
+              </div>
 
-              <div className="mt-6 relative flex-grow">
-                <label className="text-xs font-bold uppercase tracking-widest text-red-700 block mb-2">
-                  Select Size
-                </label>
-                <div className="relative">
-                  <select
-                    className="w-full bg-white border-2 border-gray-200 rounded-2xl px-5 py-3.5 text-gray-900 font-bold focus:outline-none focus:ring-4 focus:ring-red-500/20 focus:border-red-500 transition-all appearance-none cursor-pointer text-lg shadow-sm"
-                    onChange={(e) =>
-                      setSelectedSize({
-                        ...selectedSize,
-                        [product._id]: product.sizes.find(
-                          (s) => s.weight === e.target.value
-                        ),
-                      })
-                    }
-                  >
+              {/* Content Area - ULTRA COMPACT */}
+              <div className="pt-4 pb-1 px-1 flex flex-col flex-grow">
+                <div className="mb-2">
+                  <h3 className="text-base font-serif text-gray-900 group-hover:text-red-900 transition-colors duration-300 line-clamp-1">
+                    {product.name}
+                  </h3>
+                  <div className="w-6 h-0.5 bg-red-800/20 mt-0.5 group-hover:w-12 transition-all duration-500" />
+                </div>
+
+                <p className="text-[11px] text-gray-400 leading-tight line-clamp-2 mb-3 h-7">
+                  {product.description || "Premium authentic spice blend."}
+                </p>
+
+                <div className="mt-auto space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px] font-black uppercase tracking-[0.15em] text-gray-300">Weight</span>
+                    <span className="text-[9px] font-black uppercase tracking-[0.05em] text-green-600 px-1.5 py-0.5 bg-green-50 rounded">In Stock</span>
+                  </div>
+                  
+                  <div className="flex flex-wrap gap-1.5">
                     {product.sizes.map((s) => (
-                      <option key={s.weight} value={s.weight} className="font-semibold">
-                        {`${s.weight} - ₹${s.price}`}
-                      </option>
+                      <button
+                        key={s.weight}
+                        onClick={() =>
+                          setSelectedSize({
+                            ...selectedSize,
+                            [product._id]: s,
+                          })
+                        }
+                        className={`py-1.5 px-3 rounded-lg text-[10px] font-bold transition-all border ${
+                          (selectedSize[product._id]?.weight || product.sizes[0].weight) === s.weight
+                            ? "border-red-800 bg-red-800 text-white shadow-sm"
+                            : "border-gray-100 bg-gray-50 text-gray-400 hover:border-red-100"
+                        }`}
+                      >
+                        {s.weight}
+                      </button>
                     ))}
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-red-600">
-                    <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                      <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                    </svg>
+                  </div>
+
+                  <div className="pt-3 mt-1 border-t border-gray-50">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => handleAddToCart(product)}
+                      className="w-full bg-[#111] hover:bg-black text-white py-2 rounded-lg font-bold text-[10px] uppercase tracking-widest transition-all duration-300 flex items-center justify-between px-3"
+                    >
+                      <span>Add to Cart</span>
+                      <span className="text-xs italic bg-white/10 px-2 py-0.5 rounded ml-2">
+                        ₹{selectedSize[product._id]?.price || product.sizes[0].price}
+                      </span>
+                    </motion.button>
                   </div>
                 </div>
               </div>
-
-              <div className="flex items-center justify-between mt-8 pt-6 border-t-2 border-gray-100">
-                <div className="flex flex-col">
-                  <span className="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">Price</span>
-                  <span className="text-3xl font-black text-red-700">
-                    ₹{selectedSize[product._id]?.price || product.sizes[0].price}
-                  </span>
-                </div>
-                <motion.button
-                  onClick={() => handleAddToCart(product)}
-                  className="bg-gradient-to-r from-red-600 to-red-800 text-white px-8 py-4 rounded-full font-black uppercase tracking-wider shadow-lg hover:shadow-red-700/40 transition-all text-sm"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Add to Cart
-                </motion.button>
-              </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

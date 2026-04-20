@@ -149,14 +149,24 @@ const AddProduct = () => {
     e.preventDefault();
 
     // Frontend validation
-    if (
-      formData.name.length < 3 ||
-      formData.description.length < 10 ||
-      !formData.weight ||
-      !formData.price ||
-      !formData.image
-    ) {
-      alert("Please fill all fields correctly!");
+    if (!formData.name || formData.name.length < 3) {
+      alert("Name must be at least 3 characters!");
+      return;
+    }
+    if (!formData.description || formData.description.length < 10) {
+      alert("Description must be at least 10 characters!");
+      return;
+    }
+    if (!formData.weight) {
+      alert("Please enter a weight (e.g. 100g)!");
+      return;
+    }
+    if (!formData.price) {
+      alert("Please enter a price!");
+      return;
+    }
+    if (!formData.image) {
+      alert("Please upload an image!");
       return;
     }
 
