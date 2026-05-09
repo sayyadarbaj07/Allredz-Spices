@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { m, AnimatePresence } from "framer-motion";
-import { useGetProductByIdQuery } from "../redux/Api/productAPi";
+import { useGetProductByIdQuery } from "../redux/Api/productApi";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import { ShoppingCart, ArrowLeft, Star, ShieldCheck, Truck, RotateCcw } from "lucide-react";
 import hero from "../assets/hero.png";

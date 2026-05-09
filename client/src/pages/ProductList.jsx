@@ -1,5 +1,5 @@
 import React from "react";
-import { useGetAllProductsQuery } from "../redux/Api/productAPi";
+import { useGetAllProductsQuery } from "../redux/Api/productApi";
 const ProductList = () => {
   // RTK Query hook — backend se data fetch karega
   const { data, error, isLoading } = useGetAllProductsQuery();

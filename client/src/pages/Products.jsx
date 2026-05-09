@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, m } from "framer-motion";
 import hero from "../assets/masala.png";
-import { useGetAllProductsQuery } from "../redux/Api/productAPi";
+import { useGetAllProductsQuery } from "../redux/Api/productApi";
 import { useNavigate } from "react-router-dom";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import { ShoppingCart, Eye, Star } from "lucide-react";

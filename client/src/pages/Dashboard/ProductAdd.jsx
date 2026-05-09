@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { m, AnimatePresence } from "framer-motion";
-import { useAddProductMutation } from "../../redux/Api/productAPi";
+import { useAddProductMutation } from "../../redux/Api/productApi";
 import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import { X, Upload, Package, Info, Tag, IndianRupee, Sparkles, ChevronLeft } from "lucide-react";
 
