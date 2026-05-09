@@ -50,6 +50,7 @@ const Hero = () => {
           variants={staggerContainer}
           initial="hidden"
           animate="visible"
+          viewport={{ once: true, amount: 0.3 }}
         >
           <div className="space-y-4">
             <m.span 
@@ -89,21 +90,24 @@ const Hero = () => {
         {/* RIGHT CONTENT */}
         <m.div
           className="w-full md:w-2/5 flex justify-center md:justify-end"
-          initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          viewport={{ once: true }}
         >
           <div className="relative group w-full max-w-[320px] sm:max-w-none">
-            <div className="absolute -inset-10 bg-yellow-400/20 rounded-full blur-[100px] group-hover:bg-yellow-400/30 transition duration-1000 animate-pulse"></div>
+            <div className="absolute -inset-10 bg-yellow-400/20 rounded-full blur-[40px] md:blur-[100px] group-hover:bg-yellow-400/30 transition duration-1000"></div>
             <m.div
-              className="relative w-full aspect-[4/5] sm:w-64 md:w-80 lg:w-96 h-auto sm:h-[500px] lg:h-[600px] overflow-hidden rounded-[3rem] sm:rounded-[4rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.6)] border-4 border-white/10 gpu-accelerated"
+              className="relative w-full aspect-[4/5] sm:w-64 md:w-80 lg:w-96 h-auto sm:h-[500px] lg:h-[600px] overflow-hidden rounded-[3rem] sm:rounded-[4rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.4)] border-4 border-white/10 gpu-accelerated"
               whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.6 }}
             >
               <img
                 src={chikanmasala}
                 alt="Premium Indian Spices"
-                className="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-[3s] ease-out"
+                loading="lazy"
+                width={384}
+                height={600}
+                className="w-full h-full object-cover scale-105 md:group-hover:scale-125 transition-transform duration-[2s] ease-out"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
             </m.div>

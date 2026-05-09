@@ -53,7 +53,7 @@ const IngredientsShowcase = () => {
         <m.div 
           initial="hidden"
           whileInView="visible"
-          viewport={viewportSettings}
+          viewport={{ once: true, amount: 0.2 }}
           variants={staggerContainer}
           className="text-center mb-16 md:mb-24 space-y-6"
         >
@@ -71,7 +71,7 @@ const IngredientsShowcase = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={viewportSettings}
+          viewport={{ once: true, amount: 0.1 }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
         >
           {ingredients.map((ing, i) => {

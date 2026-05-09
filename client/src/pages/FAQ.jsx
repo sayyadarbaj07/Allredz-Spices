@@ -35,7 +35,7 @@ const FAQ = () => {
         <m.div 
           initial="hidden"
           whileInView="visible"
-          viewport={viewportSettings}
+          viewport={{ once: true, amount: 0.3 }}
           variants={staggerContainer}
           className="text-center mb-20 space-y-6"
         >
@@ -49,7 +49,7 @@ const FAQ = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={viewportSettings}
+          viewport={{ once: true, amount: 0.1 }}
           className="space-y-6"
         >
           {faqs.map((faq, i) => (

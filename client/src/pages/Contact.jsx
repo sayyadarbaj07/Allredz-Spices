@@ -35,13 +35,13 @@ const Contact = () => {
 
       <div className="section-container">
         {/* Header Section */}
-        <m.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportSettings}
-          variants={staggerContainer}
-          className="text-center mb-24 space-y-8"
-        >
+          <m.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={staggerContainer}
+            className="text-center mb-24 space-y-8"
+          >
           <div className="space-y-4">
             <m.span variants={fadeUp} className="cinematic-heading text-red-800 text-sm block">Connect With Us</m.span>
             <m.h1 variants={fadeUp} className="text-5xl sm:text-7xl md:text-8xl font-heading font-black text-gray-900 leading-[1.05] tracking-tight">
@@ -61,7 +61,7 @@ const Contact = () => {
             variants={scaleIn}
             initial="hidden"
             whileInView="visible"
-            viewport={viewportSettings}
+            viewport={{ once: true, amount: 0.2 }}
             className="luxury-card p-12 md:p-16 bg-white relative overflow-hidden group"
           >
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-red to-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -142,7 +142,7 @@ const Contact = () => {
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={viewportSettings}
+            viewport={{ once: true, amount: 0.1 }}
             className="space-y-16"
           >
             <div className="space-y-12">

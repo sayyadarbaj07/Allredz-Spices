@@ -36,7 +36,7 @@ const Testimonials = () => {
         <m.div 
           initial="hidden"
           whileInView="visible"
-          viewport={viewportSettings}
+          viewport={{ once: true, amount: 0.3 }}
           variants={staggerContainer}
           className="text-center mb-20 md:mb-24 space-y-6"
         >
@@ -50,7 +50,7 @@ const Testimonials = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={viewportSettings}
+          viewport={{ once: true, amount: 0.1 }}
           className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12"
         >
           {testimonials.map((t, i) => (

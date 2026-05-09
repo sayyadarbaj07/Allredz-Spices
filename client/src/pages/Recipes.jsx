@@ -36,7 +36,7 @@ const Recipes = () => {
         <m.div 
           initial="hidden"
           whileInView="visible"
-          viewport={viewportSettings}
+          viewport={{ once: true, amount: 0.3 }}
           variants={staggerContainer}
           className="flex flex-col md:flex-row justify-between items-end mb-16 md:mb-24 gap-8"
         >
@@ -57,7 +57,7 @@ const Recipes = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={viewportSettings}
+          viewport={{ once: true, ...viewportSettings }}
           className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12"
         >
           {recipes.map((recipe, i) => (
@@ -70,6 +70,7 @@ const Recipes = () => {
                 <img 
                   src={recipe.image} 
                   alt={recipe.title} 
+                  loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110 ease-out" 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-700" />

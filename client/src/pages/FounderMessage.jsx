@@ -29,7 +29,7 @@ const FounderMessage = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={viewportSettings}
+          viewport={{ once: true, amount: 0.3 }}
           className="flex flex-col md:flex-row items-center gap-16 lg:gap-32"
         >
           {/* Image Container */}

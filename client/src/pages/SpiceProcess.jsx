@@ -46,7 +46,7 @@ const SpiceProcess = () => {
         <m.div 
           initial="hidden"
           whileInView="visible"
-          viewport={viewportSettings}
+          viewport={{ once: true, amount: 0.2 }}
           variants={staggerContainer}
           className="text-center mb-20 md:mb-24 space-y-6 px-4"
         >
@@ -64,7 +64,7 @@ const SpiceProcess = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={viewportSettings}
+          viewport={{ once: true, amount: 0.1 }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
         >
           {processes.map((p, i) => {

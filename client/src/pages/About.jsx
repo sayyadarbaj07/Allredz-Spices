@@ -17,8 +17,8 @@ const AboutUs = () => {
     <div className="bg-[#faf9f6] min-h-screen font-body overflow-hidden">
       {/* Cinematic Hero Section */}
       <section className="relative py-32 md:py-48 px-6 overflow-hidden flex items-center min-h-[90vh]">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-red-100/30 rounded-full blur-[150px] -z-10 opacity-60 animate-pulse-glow" />
-        <div className="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-yellow-100/20 rounded-full blur-[120px] -z-10" />
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] md:w-[800px] md:h-[800px] bg-red-100/30 rounded-full blur-[60px] md:blur-[150px] -z-10 opacity-60" />
+        <div className="absolute -bottom-1/4 -left-1/4 w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-yellow-100/20 rounded-full blur-[60px] md:blur-[120px] -z-10" />
         
         <div className="section-container">
           <div className="flex flex-col md:flex-row items-center gap-20">
@@ -27,7 +27,7 @@ const AboutUs = () => {
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
-              viewport={viewportSettings}
+              viewport={{ once: true, amount: 0.3 }}
             >
               <div className="space-y-4">
                 <m.span variants={fadeUp} className="cinematic-heading text-brand-red text-sm block">
@@ -66,14 +66,15 @@ const AboutUs = () => {
               variants={scaleIn}
               initial="hidden"
               whileInView="visible"
-              viewport={viewportSettings}
+              viewport={{ once: true }}
             >
-              <div className="absolute -inset-10 bg-brand-gold/5 rounded-[4rem] rotate-6 scale-95 animate-float-slow" />
+              <div className="absolute -inset-10 bg-brand-gold/5 rounded-[4rem] rotate-6 scale-95" />
               <div className="relative rounded-[4rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] border-8 border-white group">
                 <img 
                   src={spiceImg} 
                   alt="Authentic Spices" 
-                  className="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-[3s] ease-out" 
+                  loading="lazy"
+                  className="w-full h-full object-cover scale-110 md:group-hover:scale-125 transition-transform duration-[2s] ease-out" 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-red/20 to-transparent" />
               </div>

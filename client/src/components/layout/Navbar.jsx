@@ -71,9 +71,9 @@ const Navbar = () => {
 
   return (
     <nav 
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${
+      className={`fixed top-0 left-0 w-full z-[1000] transition-all duration-500 ease-in-out ${
         isScrolled 
-          ? "bg-brand-red/90 backdrop-blur-lg py-2 shadow-2xl" 
+          ? "bg-brand-red/90 backdrop-blur-md py-2 shadow-2xl" 
           : "bg-brand-red py-4 md:py-6 shadow-md"
       }`}
     >
@@ -184,7 +184,7 @@ const Navbar = () => {
       {/* Mobile Sidebar Overlay */}
       <AnimatePresence>
         {isOpen && (
-          <div className="lg:hidden fixed inset-0 z-[100] overflow-hidden">
+          <div className="lg:hidden fixed inset-0 z-[1100] overflow-hidden">
             {/* Backdrop with Blur */}
             <motion.div 
               initial={{ opacity: 0 }}

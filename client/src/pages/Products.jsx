@@ -96,7 +96,7 @@ const Products = () => {
         <m.div
           initial="hidden"
           whileInView="visible"
-          viewport={viewportSettings}
+          viewport={{ once: true, amount: 0.3 }}
           variants={staggerContainer}
           className="mb-20 text-center space-y-6"
         >
@@ -117,7 +117,7 @@ const Products = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={viewportSettings}
+          viewport={{ once: true, amount: 0.1 }}
           className="grid gap-4 md:gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         >
           {products.map((product, idx) => (
@@ -138,7 +138,10 @@ const Products = () => {
                         : product.image || hero
                     }
                     alt={product.name}
-                    className="relative z-10 w-full h-full object-contain drop-shadow-2xl group-hover:scale-110 transition-transform duration-1000 ease-out"
+                    loading="lazy"
+                    width={300}
+                    height={375}
+                    className="relative z-10 w-full h-full object-contain drop-shadow-2xl group-hover:scale-110 transition-transform duration-700 ease-out"
                   />
 
                   {/* Quick Actions Overlay */}
