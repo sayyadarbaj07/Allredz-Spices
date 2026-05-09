@@ -3,12 +3,15 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAdminLoginMutation } from "../redux/Api/authApi";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../redux/Slice/authSlice";
-import { Lock, Mail, Eye, EyeOff, ChevronLeft, ShieldCheck } from "lucide-react";
+import { m, AnimatePresence } from "framer-motion";
+import { Lock, Mail, Eye, EyeOff, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
 
 const AdminLogin = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [adminLogin] = useAdminLoginMutation();
+    const { scaleIn } = useScrollAnimation();
 
     const [form, setForm] = useState({ email: "", password: "" });
     const [error, setError] = useState("");
@@ -27,8 +30,6 @@ const AdminLogin = () => {
 
         try {
             const res = await adminLogin(form).unwrap();
-
-            // Server already rejects non-admins with 403
             localStorage.setItem("token", res.token);
             localStorage.setItem("role", "admin");
             dispatch(setCredentials(res));
@@ -41,86 +42,74 @@ const AdminLogin = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-6">
-            <div className="w-full max-w-[420px]">
-                {/* Simple Brand Header */}
-                <div className="text-center mb-10">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-[#8b1c1c] text-white rounded-2xl mb-6 shadow-lg shadow-red-900/20">
-                        <ShieldCheck size={32} />
-                    </div>
-                    <h1 className="text-3xl font-black text-gray-900 tracking-tight">Admin Portal</h1>
-                    <p className="text-gray-500 mt-2 font-medium">Secure authentication for administrators</p>
-                </div>
+        <div className="min-h-screen bg-[#faf9f6] flex items-center justify-center p-6 font-body overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-red-100/10 rounded-full blur-[150px] -z-10 animate-pulse-glow" />
+            
+            <m.div 
+                variants={scaleIn}
+                initial="hidden"
+                animate="visible"
+                className="w-full max-w-[480px] relative"
+            >
+                <m.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
+                   <div className="inline-flex items-center gap-4 group mb-8">
+                      <div className="w-16 h-16 bg-gray-900 rounded-2xl flex items-center justify-center text-brand-red shadow-2xl transition-transform duration-500 group-hover:rotate-12">
+                         <ShieldCheck size={32} />
+                      </div>
+                      <div className="text-left">
+                         <h1 className="text-3xl font-heading font-black text-gray-900 tracking-tight">Admin Portal</h1>
+                         <p className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-red opacity-60">Elite Access Only</p>
+                      </div>
+                   </div>
+                </m.div>
 
-                {/* Login Card - Crystal Effect */}
-                <div className="bg-white/80 backdrop-blur-md rounded-[2rem] shadow-xl shadow-black/5 p-10 border border-white/20 relative overflow-hidden">
-                    {error && (
-                        <div className="mb-6 bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-xl text-sm font-medium">
-                            {error}
-                        </div>
-                    )}
+                <div className="luxury-card bg-white p-12 md:p-16 relative overflow-hidden group shadow-[0_50px_100px_-20px_rgba(0,0,0,0.05)]">
+                    <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-gray-900 to-brand-red opacity-60" />
+                    
+                    <AnimatePresence mode="wait">
+                        {error && (
+                            <m.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="mb-8 p-4 bg-red-50 border border-red-100 text-red-600 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-3">
+                                <Lock size={12} /> {error}
+                            </m.div>
+                        )}
+                    </AnimatePresence>
 
-                    <form onSubmit={handleLogin} className="space-y-6">
-                        <div className="space-y-2">
-                            <label className="text-sm font-bold text-gray-700 ml-1 uppercase tracking-wider">Email Address</label>
-                            <div className="relative group">
-                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#8b1c1c] transition-colors">
+                    <form onSubmit={handleLogin} className="space-y-8">
+                        <div className="space-y-3">
+                            <label className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 ml-2">Admin Identity</label>
+                            <div className="relative group/input">
+                                <div className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within/input:text-brand-red transition-colors">
                                     <Mail size={18} />
                                 </div>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    placeholder="admin@allredz.com"
-                                    className="w-full bg-gray-50/50 border border-gray-200 rounded-2xl pl-12 pr-4 py-4 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#8b1c1c]/10 focus:border-[#8b1c1c] focus:bg-white transition-all"
-                                    value={form.email}
-                                    onChange={handleChange}
-                                    required
-                                />
+                                <input type="email" name="email" placeholder="admin@allredz.com" value={form.email} onChange={handleChange} required className="w-full bg-gray-50 border-none rounded-2xl pl-16 pr-6 py-5 text-sm font-bold text-gray-900 placeholder-gray-300 focus:ring-2 focus:ring-brand-red/10 transition-all outline-none" />
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-sm font-bold text-gray-700 ml-1 uppercase tracking-wider">Password</label>
-                            <div className="relative group">
-                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#8b1c1c] transition-colors">
+                        <div className="space-y-3">
+                            <label className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 ml-2">Access Key</label>
+                            <div className="relative group/input">
+                                <div className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within/input:text-brand-red transition-colors">
                                     <Lock size={18} />
                                 </div>
-                                <input
-                                    type={showPass ? "text" : "password"}
-                                    name="password"
-                                    placeholder="••••••••"
-                                    className="w-full bg-gray-50/50 border border-gray-200 rounded-2xl pl-12 pr-12 py-4 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#8b1c1c]/10 focus:border-[#8b1c1c] focus:bg-white transition-all"
-                                    value={form.password}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPass(!showPass)}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                                >
+                                <input type={showPass ? "text" : "password"} name="password" placeholder="••••••••" value={form.password} onChange={handleChange} required className="w-full bg-gray-50 border-none rounded-2xl pl-16 pr-16 py-5 text-sm font-bold text-gray-900 placeholder-gray-300 focus:ring-2 focus:ring-brand-red/10 transition-all outline-none" />
+                                <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-300 hover:text-brand-red transition-colors">
                                     {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
                             </div>
                         </div>
 
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full bg-[#8b1c1c] text-white font-bold py-4 rounded-2xl shadow-lg shadow-red-900/10 hover:bg-[#7a1818] transition-all disabled:opacity-50 disabled:cursor-not-allowed text-lg tracking-wide"
-                        >
-                            {loading ? "Authenticating..." : "Login to Dashboard"}
+                        <button type="submit" disabled={loading} className="premium-button w-full bg-gray-900 text-white py-6 shadow-2xl hover:bg-brand-red group h-20">
+                            {loading ? <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin mx-auto" /> : <span className="flex items-center gap-3 justify-center">Authorize Access <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" /></span>}
                         </button>
                     </form>
 
-                    <div className="mt-10 pt-6 border-t border-gray-100 flex justify-center">
-                        <Link to="/" className="text-gray-500 hover:text-[#8b1c1c] transition-colors text-sm font-bold flex items-center gap-2">
-                            <ChevronLeft size={16} />
-                            Return to Storefront
+                    <div className="mt-12 pt-8 border-t border-gray-50 flex justify-center">
+                        <Link to="/" className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-brand-red transition-all">
+                           <ArrowRight size={14} className="rotate-180" /> Storefront Home
                         </Link>
                     </div>
                 </div>
-            </div>
+            </m.div>
         </div>
     );
 };

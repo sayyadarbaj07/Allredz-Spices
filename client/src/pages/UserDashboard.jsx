@@ -2,176 +2,181 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { logout } from "../redux/Slice/authSlice";
-import {
-  User,
-  Mail,
-  ShoppingBag,
-  ShoppingCart,
-  Package,
-  MessageCircle,
-  LogOut,
-  ChevronRight,
+import { m, AnimatePresence } from "framer-motion";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
+import { 
+  User, 
+  Mail, 
+  ShoppingBag, 
+  ShoppingCart, 
+  Package, 
+  MessageCircle, 
+  LogOut, 
   ShieldCheck,
+  Sparkles,
+  ArrowRight,
+  TrendingUp,
+  Star,
+  Settings
 } from "lucide-react";
 
 const UserDashboard = () => {
-  const { user } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+  const { fadeUp, staggerContainer, scaleIn } = useScrollAnimation();
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/");
+    navigate("/login");
   };
 
+  if (!user) return null;
+
   const quickActions = [
-    {
-      label: "Shop Now",
-      icon: ShoppingBag,
-      path: "/products",
-      description: "Browse our spice collection",
-    },
-    {
-      label: "My Orders",
-      icon: Package,
-      path: "/ordersummary",
-      description: "Track your orders",
-    },
-    {
-      label: "View Cart",
-      icon: ShoppingCart,
-      path: "/cart",
-      description: "Review your cart items",
-    },
-    {
-      label: "Contact Us",
-      icon: MessageCircle,
-      path: "/contact",
-      description: "Get help & support",
-    },
+    { label: "Active Orders", icon: Package, value: "02", color: "text-blue-500", bg: "bg-blue-50" },
+    { label: "Loyalty Points", icon: Star, value: "1,250", color: "text-amber-500", bg: "bg-amber-50" },
+    { label: "Curated Selection", icon: ShoppingCart, value: "05", color: "text-emerald-500", bg: "bg-emerald-50" },
   ];
 
-  // Initials avatar
-  const initials = user?.name
-    ? user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
-    : "U";
-
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
-
-      {/* ─── Hero Header ─── */}
-      <div className="bg-[#8b1c1c] relative overflow-hidden">
-        {/* Decorative blobs */}
-        <div className="absolute -top-16 -right-16 w-64 h-64 bg-white/5 rounded-full" />
-        <div className="absolute -bottom-10 left-[20%] w-72 h-72 bg-red-900/40 rounded-full blur-3xl" />
-
-        <div className="relative z-10 max-w-4xl mx-auto px-6 py-12">
-          <div className="flex items-center gap-6">
-            {/* Avatar */}
-            <div className="w-20 h-20 bg-white/10 border-2 border-white/20 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-xl">
-              <span className="text-2xl font-black text-white tracking-tight">{initials}</span>
-            </div>
-
-            {/* Info */}
-            <div className="flex-1 min-w-0">
-              <p className="text-red-200 text-xs font-bold uppercase tracking-widest mb-1">
-                Welcome back
-              </p>
-              <h1 className="text-3xl md:text-4xl font-black text-white truncate">
-                {user?.name || "User"}
-              </h1>
-              <p className="text-red-200/80 text-sm mt-1 truncate">{user?.email}</p>
-            </div>
-
-            {/* Logout — desktop */}
-            <button
-              onClick={handleLogout}
-              className="hidden md:flex items-center gap-2 border border-white/20 text-white/70 hover:text-white hover:bg-white/10 px-4 py-2 rounded-xl text-sm font-bold transition-all"
-            >
-              <LogOut size={16} />
-              Logout
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* ─── Main Content ─── */}
-      <div className="max-w-4xl mx-auto px-6 py-10 space-y-8">
-
-        {/* Account Info */}
-        <section>
-          <h2 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">
-            My Account
-          </h2>
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 divide-y divide-gray-50 overflow-hidden">
-            {[
-              { label: "Full Name", value: user?.name, Icon: User },
-              { label: "Email Address", value: user?.email, Icon: Mail },
-              { label: "Account Type", value: user?.isAdmin ? "Administrator" : "Customer", Icon: ShieldCheck },
-            ].map(({ label, value, Icon }) => (
-              <div key={label} className="flex items-center gap-4 px-6 py-5 hover:bg-gray-50/60 transition-colors">
-                <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Icon size={18} className="text-[#8b1c1c]" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{label}</p>
-                  <p className="text-gray-800 font-semibold mt-0.5 truncate">{value || "—"}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Quick Actions */}
-        <section>
-          <h2 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">
-            Quick Actions
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {quickActions.map(({ label, icon: Icon, path, description }) => (
-              <button
-                key={label}
-                onClick={() => navigate(path)}
-                className="group bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md hover:border-[#8b1c1c]/20 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200 p-5 flex items-center gap-4 text-left"
-              >
-                <div className="w-12 h-12 bg-[#8b1c1c]/8 group-hover:bg-[#8b1c1c]/12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors" style={{ backgroundColor: "rgb(139 28 28 / 0.08)" }}>
-                  <Icon size={22} className="text-[#8b1c1c]" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-black text-gray-900 text-sm">{label}</p>
-                  <p className="text-gray-400 text-xs mt-0.5">{description}</p>
-                </div>
-                <ChevronRight size={16} className="text-gray-300 group-hover:text-[#8b1c1c] group-hover:translate-x-0.5 transition-all flex-shrink-0" />
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {/* Promo Banner */}
-        <section className="bg-[#8b1c1c] rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl shadow-red-900/20 overflow-hidden relative">
-          <div className="absolute -top-6 -right-6 w-32 h-32 bg-white/5 rounded-full" />
-          <div className="absolute -bottom-8 left-[40%] w-40 h-40 bg-red-900/40 rounded-full blur-3xl" />
-          <div className="relative z-10">
-            <p className="text-red-200 text-xs font-bold uppercase tracking-widest">Exclusive Offer 🎉</p>
-            <h3 className="text-white text-xl font-black mt-1">Fresh Spices, Delivered!</h3>
-            <p className="text-red-200/80 text-sm mt-1">Shop our premium masala collection today.</p>
-          </div>
-          <button
-            onClick={() => navigate("/products")}
-            className="relative z-10 bg-white text-[#8b1c1c] font-black px-6 py-3 rounded-xl hover:bg-red-50 active:scale-95 transition-all shadow-lg flex-shrink-0 text-sm"
-          >
-            Shop Now →
-          </button>
-        </section>
-
-        {/* Logout — mobile */}
-        <button
-          onClick={handleLogout}
-          className="md:hidden w-full border border-gray-200 text-gray-500 hover:text-red-600 hover:border-red-200 py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all"
+    <div className="min-h-screen bg-[#faf9f6] pt-32 pb-24 px-6 font-body overflow-hidden relative">
+      {/* Cinematic Decor */}
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-red-100/10 rounded-full blur-[150px] -z-10 animate-pulse-glow" />
+      
+      <div className="max-w-6xl mx-auto">
+        {/* Header Section */}
+        <m.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col md:flex-row items-start md:items-center justify-between mb-16 gap-8"
         >
-          <LogOut size={16} />
-          Logout
-        </button>
+          <div className="space-y-2">
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-brand-red">Patron Portal</span>
+            <h1 className="text-4xl md:text-6xl font-heading font-black text-gray-900 tracking-tight">
+              Welcome, <span className="italic text-brand-red glow-text">{user.name.split(' ')[0]}</span>
+            </h1>
+            <p className="text-xs font-black uppercase tracking-widest text-gray-400">Member since 2024 • Elite Status</p>
+          </div>
+          
+          <button 
+            onClick={handleLogout}
+            className="group flex items-center gap-4 bg-white p-2 pr-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-brand-red/20 transition-all duration-500"
+          >
+            <div className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400 group-hover:bg-brand-red group-hover:text-white transition-all">
+               <LogOut size={20} />
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 group-hover:text-gray-900">Sign Out</span>
+          </button>
+        </m.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          {/* Main Content Side */}
+          <m.div 
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="lg:col-span-8 space-y-12"
+          >
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {quickActions.map((action, i) => (
+                <m.div 
+                  key={i}
+                  variants={fadeUp}
+                  className="luxury-card bg-white p-8 group hover:shadow-[0_30px_60px_rgba(0,0,0,0.05)] transition-all duration-500"
+                >
+                   <div className={`w-14 h-14 rounded-2xl ${action.bg} ${action.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                      <action.icon size={24} />
+                   </div>
+                   <div className="space-y-1">
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">{action.label}</p>
+                      <h3 className="text-3xl font-heading font-black text-gray-900 tracking-tight">{action.value}</h3>
+                   </div>
+                </m.div>
+              ))}
+            </div>
+
+            {/* Interaction Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+               <m.div variants={fadeUp} className="luxury-card bg-gray-900 p-10 text-white relative overflow-hidden group">
+                  <div className="relative z-10 space-y-8">
+                     <div className="w-12 h-12 bg-brand-red rounded-xl flex items-center justify-center">
+                        <ShoppingBag size={24} />
+                     </div>
+                     <div className="space-y-2">
+                        <h3 className="text-2xl font-heading font-black tracking-tight">Recent Acquisitions</h3>
+                        <p className="text-xs text-gray-400 font-medium italic">Track your ongoing distributions</p>
+                     </div>
+                     <button className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-brand-red hover:text-white transition-colors">
+                        View History <ArrowRight size={14} />
+                     </button>
+                  </div>
+                  <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-brand-red/10 rounded-full blur-[60px]" />
+               </m.div>
+
+               <m.div variants={fadeUp} className="luxury-card bg-white p-10 border border-gray-100 group">
+                  <div className="space-y-8">
+                     <div className="w-12 h-12 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center">
+                        <Sparkles size={24} />
+                     </div>
+                     <div className="space-y-2">
+                        <h3 className="text-2xl font-heading font-black text-gray-900 tracking-tight">Aromatic Vault</h3>
+                        <p className="text-xs text-gray-400 font-medium italic">Exclusive offers for our patrons</p>
+                     </div>
+                     <button className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-brand-red transition-colors">
+                        Enter Vault <ArrowRight size={14} />
+                     </button>
+                  </div>
+               </m.div>
+            </div>
+          </m.div>
+
+          {/* Profile Sidebar */}
+          <m.aside 
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="lg:col-span-4 space-y-8"
+          >
+            <div className="luxury-card bg-white p-10 border border-gray-100 shadow-sm">
+               <div className="flex flex-col items-center text-center space-y-6">
+                  <div className="relative">
+                     <div className="w-24 h-24 bg-gray-50 rounded-[2.5rem] flex items-center justify-center text-gray-300 border-4 border-white shadow-xl">
+                        <User size={48} strokeWidth={1} />
+                     </div>
+                     <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-emerald-500 rounded-xl border-4 border-white flex items-center justify-center text-white shadow-lg">
+                        <ShieldCheck size={14} />
+                     </div>
+                  </div>
+                  
+                  <div className="space-y-1">
+                     <h2 className="text-2xl font-heading font-black text-gray-900">{user.name}</h2>
+                     <p className="text-sm font-medium text-gray-400 italic">{user.email}</p>
+                  </div>
+
+                  <div className="w-full pt-6 border-t border-gray-50 space-y-4">
+                     {[
+                       { label: "Profile Identity", icon: User },
+                       { label: "Secure Auth", icon: ShieldCheck },
+                       { label: "Notification Nodes", icon: MessageCircle },
+                       { label: "System Preferences", icon: Settings },
+                     ].map((item, i) => (
+                       <button key={i} className="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-gray-50 group transition-all">
+                          <div className="flex items-center gap-4">
+                             <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400 group-hover:text-brand-red transition-colors">
+                                <item.icon size={16} />
+                             </div>
+                             <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 group-hover:text-gray-900">{item.label}</span>
+                          </div>
+                          <ArrowRight size={14} className="text-gray-200 group-hover:text-brand-red transition-all group-hover:translate-x-1" />
+                       </button>
+                     ))}
+                  </div>
+               </div>
+            </div>
+          </m.aside>
+        </div>
       </div>
     </div>
   );

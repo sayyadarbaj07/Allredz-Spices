@@ -1,138 +1,26 @@
-// import React, { useState } from "react";
-// import { useAddProductMutation } from "../../redux/Api/productAPi";
-// import { useNavigate } from "react-router-dom";
-
-// const AddProduct = () => {
-//   const [addProduct, { isLoading, isError, isSuccess }] =
-//     useAddProductMutation();
-//   const navigate = useNavigate();
-
-//   const [formData, setFormData] = useState({
-//     name: "",
-//     price: "",
-//     weight: "",
-//     image: "",
-//   });
-
-//   const handleChange = (e) => {
-//     setFormData({
-//       ...formData,
-//       [e.target.name]: e.target.value,
-//     });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       await addProduct(formData).unwrap();
-//       alert("✅ Product added successfully!");
-//       navigate("/products");
-//     } catch (error) {
-//       console.error("❌ Error adding product:", error);
-//       alert("Something went wrong!");
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen flex items-center justify-center bg-[#f5e6d3]">
-//       <form
-//         onSubmit={handleSubmit}
-//         className="bg-white p-8 rounded-xl shadow-lg w-[400px]"
-//       >
-//         <h2 className="text-2xl font-bold text-red-800 mb-6 text-center">
-//           Add New Product
-//         </h2>
-
-//         <div className="mb-4">
-//           <label className="block font-semibold mb-1">Name</label>
-//           <input
-//             type="text"
-//             name="name"
-//             placeholder="Enter product name"
-//             value={formData.name}
-//             onChange={handleChange}
-//             className="w-full border px-3 py-2 rounded"
-//             required
-//           />
-//         </div>
-
-//         <div className="mb-4">
-//           <label className="block font-semibold mb-1">Price (₹)</label>
-//           <input
-//             type="number"
-//             name="price"
-//             placeholder="Enter price"
-//             value={formData.price}
-//             onChange={handleChange}
-//             className="w-full border px-3 py-2 rounded"
-//             required
-//           />
-//         </div>
-
-//         <div className="mb-4">
-//           <label className="block font-semibold mb-1">Weight</label>
-//           <input
-//             type="text"
-//             name="weight"
-//             placeholder="50g / 100g"
-//             value={formData.weight}
-//             onChange={handleChange}
-//             className="w-full border px-3 py-2 rounded"
-//           />
-//         </div>
-
-//         <div className="mb-4">
-//           <label className="block font-semibold mb-1">Image URL</label>
-//           <input
-//             type="text"
-//             name="image"
-//             placeholder="Enter image link"
-//             value={formData.image}
-//             onChange={handleChange}
-//             className="w-full border px-3 py-2 rounded"
-//           />
-//         </div>
-
-//         <button
-//           type="submit"
-//           disabled={isLoading}
-//           className="bg-red-700 hover:bg-red-800 text-white font-bold w-full py-2 rounded"
-//         >
-//           {isLoading ? "Adding..." : "Add Product"}
-//         </button>
-
-//         {isError && (
-//           <p className="text-red-600 text-center mt-3">Failed to add product</p>
-//         )}
-//         {isSuccess && (
-//           <p className="text-green-600 text-center mt-3">
-//             Product added successfully!
-//           </p>
-//         )}
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default AddProduct;
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { m, AnimatePresence } from "framer-motion";
+import { useAddProductMutation } from "../../redux/Api/productAPi";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
+import { X, Upload, Package, Info, Tag, IndianRupee, Sparkles, ChevronLeft } from "lucide-react";
 
 const AddProduct = () => {
   const navigate = useNavigate();
+  const [addProduct] = useAddProductMutation();
+  const { fadeUp, scaleIn } = useScrollAnimation();
 
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     weight: "",
     price: "",
-    image: null, // will hold the file
+    category: "Premium Blends",
+    image: null,
   });
   const [loading, setLoading] = useState(false);
-  const [preview, setPreview] = useState(null); // for image preview
+  const [preview, setPreview] = useState(null);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "image") {
@@ -144,191 +32,187 @@ const AddProduct = () => {
     }
   };
 
-  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Frontend validation
-    if (!formData.name || formData.name.length < 3) {
-      alert("Name must be at least 3 characters!");
-      return;
-    }
-    if (!formData.description || formData.description.length < 10) {
-      alert("Description must be at least 10 characters!");
-      return;
-    }
-    if (!formData.weight) {
-      alert("Please enter a weight (e.g. 100g)!");
-      return;
-    }
-    if (!formData.price) {
-      alert("Please enter a price!");
-      return;
-    }
-    if (!formData.image) {
-      alert("Please upload an image!");
-      return;
-    }
-
+    if (!formData.image) return alert("Please upload a product visual.");
+    
     setLoading(true);
+    const productData = new FormData();
+    productData.append("name", formData.name);
+    productData.append("description", formData.description);
+    productData.append("category", formData.category);
+    productData.append("sizes", JSON.stringify([{ weight: formData.weight, price: Number(formData.price) }]));
+    productData.append("image", formData.image);
 
     try {
-      const token = localStorage.getItem("token");
-
-      // FormData for file upload
-      const productData = new FormData();
-      productData.append("name", formData.name);
-      productData.append("description", formData.description);
-      productData.append("category", "Spices");
-      productData.append(
-        "sizes",
-        JSON.stringify([
-          { weight: formData.weight, price: Number(formData.price) },
-        ])
-      );
-      productData.append("image", formData.image);
-
-      const BASE_URL = import.meta.env.VITE_API_URL || "";
-      const res = await fetch(
-        `${BASE_URL}/api/products/add-product`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`, // do NOT set Content-Type for FormData
-          },
-          body: productData,
-        }
-      );
-
-      const data = await res.json();
-
-      if (res.ok) {
-        alert("✅ Product added successfully!");
-        // Reset form
-        setFormData({
-          name: "",
-          description: "",
-          weight: "",
-          price: "",
-          image: null,
-        });
-        setPreview(null);
-        navigate("/dashboardlayout/products");
-      } else {
-        // Show validation errors from backend
-        if (data.errors) {
-          const errorMsg = data.errors.map((err) => err.msg).join("\n");
-          alert(errorMsg);
-        } else if (data.message) {
-          alert(data.message);
-        } else {
-          alert("❌ Failed to add product!");
-        }
-      }
+      await addProduct(productData).unwrap();
+      navigate("/dashboardlayout/products");
     } catch (err) {
       console.error(err);
-      alert("❌ Something went wrong!");
+      alert("Failed to curate the new spice.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f5e6d3] relative px-4">
-      <button
-        onClick={() => navigate("/dashboardlayout/products")}
-        className="absolute top-6 right-6 bg-red-600 text-white px-4 py-1 rounded-md font-semibold hover:bg-red-700 transition"
-      >
-        ✖ Close
-      </button>
+    <div className="min-h-screen bg-[#faf9f6] py-12 px-6 relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-red-100/10 rounded-full blur-[120px] -z-10" />
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md"
-      >
-        <h2 className="text-2xl font-bold text-red-800 mb-6 text-center">
-          Add New Product
-        </h2>
-
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Enter product name (min 3 chars)"
-            className="w-full border px-3 py-2 rounded"
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">Description</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Enter description (min 10 chars)"
-            className="w-full border px-3 py-2 rounded"
-            rows="3"
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">Weight</label>
-          <input
-            type="text"
-            name="weight"
-            value={formData.weight}
-            onChange={handleChange}
-            placeholder="50g / 100g"
-            className="w-full border px-3 py-2 rounded"
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">Price (₹)</label>
-          <input
-            type="number"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            placeholder="Enter price"
-            className="w-full border px-3 py-2 rounded"
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">Image</label>
-          <input
-            type="file"
-            name="image"
-            accept="image/*"
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-            required
-          />
-          {preview && (
-            <img
-              src={preview}
-              alt="Preview"
-              className="mt-2 w-32 h-32 object-cover rounded-md border"
-            />
-          )}
-        </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-red-700 hover:bg-red-800 text-white w-full py-2 rounded"
+      <div className="max-w-4xl mx-auto">
+        <m.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          onClick={() => navigate("/dashboardlayout/products")}
+          className="group flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 hover:text-brand-red transition-all mb-10"
         >
-          {loading ? "Adding..." : "Add Product"}
-        </button>
-      </form>
+          <ChevronLeft size={14} className="group-hover:-translate-x-2 transition-transform" /> Back to Vault
+        </m.button>
+
+        <m.div 
+          variants={scaleIn}
+          initial="hidden"
+          animate="visible"
+          className="luxury-card bg-white p-10 md:p-16 relative overflow-hidden group shadow-[0_50px_100px_-20px_rgba(0,0,0,0.05)]"
+        >
+          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-red via-yellow-400 to-brand-red" />
+          
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
+            <div className="space-y-2">
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-brand-red">New Curation</span>
+              <h1 className="text-4xl md:text-5xl font-heading font-black text-gray-900 tracking-tight">
+                Add <span className="italic text-brand-red glow-text">Exquisite</span> Spice
+              </h1>
+            </div>
+            <div className="w-16 h-16 rounded-2xl bg-brand-red/5 flex items-center justify-center text-brand-red animate-pulse">
+               <Sparkles size={32} />
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              {/* Image Upload */}
+              <div className="space-y-6">
+                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 ml-2">Product Visual</label>
+                <div className="relative aspect-square rounded-[3rem] border-4 border-dashed border-gray-100 bg-gray-50/50 flex flex-col items-center justify-center overflow-hidden group/upload hover:border-brand-red/30 transition-all cursor-pointer">
+                   <input
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    onChange={handleChange}
+                    className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                    required
+                  />
+                  {preview ? (
+                    <img src={preview} alt="Preview" className="w-full h-full object-contain p-8 group-hover/upload:scale-110 transition-transform duration-700" />
+                  ) : (
+                    <div className="flex flex-col items-center gap-4 text-gray-300 group-hover/upload:text-brand-red transition-colors">
+                       <Upload size={48} strokeWidth={1.5} />
+                       <span className="text-xs font-black uppercase tracking-widest">Drop Image Here</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Form Fields */}
+              <div className="space-y-8">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 ml-2 flex items-center gap-2">
+                    <Package size={12} /> Identity
+                  </label>
+                  <input
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="E.g. Royal Kashmiri Saffron"
+                    className="w-full bg-gray-50 border-none rounded-2xl p-6 text-sm font-bold focus:ring-2 focus:ring-brand-red/20 transition-all outline-none"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 ml-2 flex items-center gap-2">
+                    <Info size={12} /> Aromatic Story
+                  </label>
+                  <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    placeholder="Describe the sensory journey..."
+                    className="w-full bg-gray-50 border-none rounded-3xl p-6 text-sm font-bold focus:ring-2 focus:ring-brand-red/20 transition-all outline-none resize-none h-40"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t border-gray-50">
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 ml-2 flex items-center gap-2">
+                  <Tag size={12} /> Category
+                </label>
+                <select 
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  className="w-full bg-gray-50 border-none rounded-2xl p-6 text-sm font-bold focus:ring-2 focus:ring-brand-red/20 transition-all outline-none appearance-none"
+                >
+                   <option>Premium Blends</option>
+                   <option>Heritage Spices</option>
+                   <option>Authentic Masalas</option>
+                   <option>Curated Collections</option>
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 ml-2 flex items-center gap-2">
+                  <Package size={12} /> Net Weight
+                </label>
+                <input
+                  name="weight"
+                  value={formData.weight}
+                  onChange={handleChange}
+                  placeholder="E.g. 100g"
+                  className="w-full bg-gray-50 border-none rounded-2xl p-6 text-sm font-bold focus:ring-2 focus:ring-brand-red/20 transition-all outline-none"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 ml-2 flex items-center gap-2">
+                  <IndianRupee size={12} /> Investment
+                </label>
+                <input
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleChange}
+                  placeholder="0.00"
+                  className="w-full bg-gray-50 border-none rounded-2xl p-6 text-sm font-bold focus:ring-2 focus:ring-brand-red/20 transition-all outline-none"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="pt-10">
+              <button
+                type="submit"
+                disabled={loading}
+                className="premium-button w-full bg-brand-red text-white py-6 shadow-2xl hover:bg-gray-900 group h-20"
+              >
+                {loading ? (
+                   <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <span className="flex items-center gap-3">
+                    Curate Spice <Sparkles size={18} className="group-hover:scale-125 transition-transform" />
+                  </span>
+                )}
+              </button>
+            </div>
+          </form>
+        </m.div>
+      </div>
     </div>
   );
 };

@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Trash2, Plus, Minus, ShoppingBag, ChevronLeft, ArrowRight } from "lucide-react";
+import { m, AnimatePresence } from "framer-motion";
+import { Trash2, Plus, Minus, ShoppingBag, ChevronLeft, ArrowRight, Sparkles, CreditCard, ShieldCheck } from "lucide-react";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import hero from "../assets/masala.png";
 
 const Cart = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
+  const { fadeUp, staggerContainer, scaleIn } = useScrollAnimation();
 
-  // Load cart from localStorage
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     setCartItems(cart);
   }, []);
 
-  // Update localStorage whenever cartItems change
   const updateCart = (newItems) => {
     setCartItems(newItems);
     localStorage.setItem("cart", JSON.stringify(newItems));
-    // Trigger storage event for Navbar to update
     window.dispatchEvent(new Event("storage"));
   };
 
@@ -43,128 +43,186 @@ const Cart = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-6">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-10">
-          <div>
-            <h1 className="text-3xl font-black text-gray-900 flex items-center gap-3">
-              <ShoppingBag className="text-[#8b1c1c]" size={32} />
-              Shopping Cart
+    <div className="min-h-screen bg-[#faf9f6] pt-32 pb-24 px-6 font-body overflow-hidden relative">
+      {/* Cinematic Background Decor */}
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-red-100/10 rounded-full blur-[150px] -z-10 animate-pulse-glow" />
+      
+      <div className="max-w-6xl mx-auto">
+        <m.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex flex-col md:flex-row items-start md:items-center justify-between mb-16 gap-8"
+        >
+          <div className="space-y-2">
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-brand-red">Your Selection</span>
+            <h1 className="text-4xl md:text-6xl font-heading font-black text-gray-900 tracking-tight flex items-center gap-6">
+               Aromatic <span className="italic text-brand-red glow-text">Basket</span>
             </h1>
-            <p className="text-gray-500 mt-1 font-medium">{cartItems.length} items in your bag</p>
+            <p className="text-xs font-black uppercase tracking-widest text-gray-400">{cartItems.length} curated treasures</p>
           </div>
-          <Link to="/products" className="text-[#8b1c1c] font-bold flex items-center gap-2 hover:underline">
-            <ChevronLeft size={18} />
-            Continue Shopping
+          <Link to="/products" className="group flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 hover:text-brand-red transition-all">
+            <ChevronLeft size={14} className="group-hover:-translate-x-2 transition-transform" /> Back to Collection
           </Link>
-        </div>
+        </m.div>
 
-        {cartItems.length === 0 ? (
-          <div className="bg-white rounded-[2rem] shadow-xl shadow-black/5 p-16 text-center border border-gray-100">
-            <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
-              <ShoppingBag size={40} className="text-gray-300" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Your cart is empty</h2>
-            <p className="text-gray-500 mb-8 max-w-sm mx-auto">Looks like you haven't added anything to your cart yet. Explore our authentic masalas!</p>
-            <button
-              onClick={() => navigate("/products")}
-              className="bg-[#8b1c1c] text-white px-10 py-4 rounded-2xl font-bold text-lg hover:bg-[#7a1818] transition-all shadow-lg shadow-red-900/10"
+        <AnimatePresence mode="wait">
+          {cartItems.length === 0 ? (
+            <m.div 
+              key="empty"
+              variants={scaleIn}
+              initial="hidden"
+              animate="visible"
+              className="luxury-card bg-white p-20 text-center relative overflow-hidden"
             >
-              Start Shopping
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            {/* Items List */}
-            <div className="lg:col-span-2 space-y-4">
-              {cartItems.map((item) => (
-                <div
-                  key={`${item._id}-${item.selectedWeight}`}
-                  className="bg-white rounded-[1.5rem] shadow-sm border border-gray-100 p-6 flex flex-col sm:flex-row items-center gap-6 hover:shadow-md transition-shadow group"
-                >
-                  {/* Image */}
-                  <div className="w-24 h-24 bg-gray-50 rounded-2xl flex items-center justify-center p-2 flex-shrink-0">
-                    <img
-                      src={item.image || hero}
-                      alt={item.name}
-                      className="w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform"
-                    />
-                  </div>
-
-                  {/* Info */}
-                  <div className="flex-grow text-center sm:text-left">
-                    <h2 className="text-xl font-bold text-gray-900 leading-tight">{item.name}</h2>
-                    <p className="text-gray-500 text-sm font-medium mt-1">Weight: <span className="text-[#8b1c1c]">{item.selectedWeight}</span></p>
-                    <div className="mt-4 flex items-center justify-center sm:justify-start gap-4">
-                      <div className="flex items-center bg-gray-50 rounded-xl border border-gray-200 p-1">
-                        <button
-                          onClick={() => updateQuantity(item._id, item.selectedWeight, -1)}
-                          className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white hover:shadow-sm text-gray-400 hover:text-[#8b1c1c] transition-all"
-                        >
-                          <Minus size={14} />
-                        </button>
-                        <span className="w-10 text-center font-bold text-gray-900">{item.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(item._id, item.selectedWeight, 1)}
-                          className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white hover:shadow-sm text-gray-400 hover:text-[#8b1c1c] transition-all"
-                        >
-                          <Plus size={14} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Price & Remove */}
-                  <div className="text-right flex flex-col items-center sm:items-end justify-between self-stretch">
-                    <p className="text-xl font-black text-gray-900">₹{item.selectedPrice * item.quantity}</p>
-                    <button
-                      onClick={() => removeItem(item._id, item.selectedWeight)}
-                      className="text-gray-300 hover:text-red-500 transition-colors mt-4 sm:mt-0"
-                    >
-                      <Trash2 size={20} />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Summary Card */}
-            <div className="lg:col-span-1">
-              <div className="bg-white rounded-[2rem] shadow-xl shadow-black/5 p-8 border border-gray-100 sticky top-28">
-                <h2 className="text-xl font-black text-gray-900 mb-6 pb-6 border-b border-gray-100">Order Summary</h2>
-
-                <div className="space-y-4 mb-8">
-                  <div className="flex justify-between text-gray-500 font-medium">
-                    <span>Subtotal</span>
-                    <span className="text-gray-900">₹{total}</span>
-                  </div>
-                  <div className="flex justify-between text-gray-500 font-medium">
-                    <span>Shipping</span>
-                    <span className="text-green-600">Calculated at checkout</span>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center mb-10 pt-6 border-t border-gray-100">
-                  <span className="text-lg font-bold text-gray-900">Estimated Total</span>
-                  <span className="text-3xl font-black text-[#8b1c1c]">₹{total}</span>
-                </div>
-
-                <button
-                  onClick={() => navigate("/checkout")}
-                  className="w-full bg-[#8b1c1c] text-white font-bold py-5 rounded-2xl shadow-lg shadow-red-900/10 hover:bg-[#7a1818] transition-all flex items-center justify-center gap-3 text-lg group"
-                >
-                  Proceed to Checkout
-                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                </button>
-
-                <p className="mt-6 text-center text-xs text-gray-400 font-medium px-4">
-                  By proceeding to checkout, you agree to our Terms of Service and Privacy Policy.
-                </p>
+              <div className="relative z-10 space-y-8">
+                 <div className="w-24 h-24 bg-gray-50 rounded-[2.5rem] flex items-center justify-center mx-auto text-gray-200">
+                    <ShoppingBag size={48} strokeWidth={1} />
+                 </div>
+                 <div className="space-y-4">
+                    <h2 className="text-3xl font-heading font-black text-gray-900">Your basket is resting.</h2>
+                    <p className="text-sm text-gray-400 font-body italic max-w-sm mx-auto leading-relaxed">
+                       The finest spices in the world are waiting to be part of your next culinary masterpiece.
+                    </p>
+                 </div>
+                 <button
+                   onClick={() => navigate("/products")}
+                   className="premium-button bg-brand-red text-white"
+                 >
+                   Begin Curation
+                 </button>
               </div>
+              <div className="absolute top-0 left-0 w-full h-1 bg-gray-50" />
+            </m.div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+              {/* Items List */}
+              <m.div 
+                variants={staggerContainer}
+                initial="hidden"
+                animate="visible"
+                className="lg:col-span-2 space-y-6"
+              >
+                {cartItems.map((item, idx) => (
+                  <m.div
+                    key={`${item._id}-${item.selectedWeight}`}
+                    variants={fadeUp}
+                    className="luxury-card bg-white p-8 flex flex-col md:flex-row items-center gap-10 group hover:shadow-[0_30px_60px_rgba(0,0,0,0.05)] transition-all duration-500"
+                  >
+                    {/* Image */}
+                    <div className="w-32 h-32 bg-[#faf9f6] rounded-[2.5rem] flex items-center justify-center p-6 shrink-0 group-hover:scale-105 transition-transform duration-700 relative overflow-hidden">
+                      <img
+                        src={item.image || hero}
+                        alt={item.name}
+                        className="w-full h-full object-contain drop-shadow-2xl relative z-10"
+                      />
+                      <div className="absolute inset-0 bg-brand-red/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+
+                    {/* Info */}
+                    <div className="flex-1 space-y-6 text-center md:text-left">
+                       <div className="space-y-1">
+                          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-red">{item.selectedWeight}</p>
+                          <h2 className="text-2xl font-heading font-black text-gray-900 tracking-tight leading-none">{item.name}</h2>
+                       </div>
+                       
+                       <div className="flex items-center justify-center md:justify-start gap-8">
+                          <div className="flex items-center bg-gray-50 rounded-2xl p-1 border border-gray-100">
+                             <button
+                               onClick={() => updateQuantity(item._id, item.selectedWeight, -1)}
+                               className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white hover:shadow-sm text-gray-400 hover:text-brand-red transition-all"
+                             >
+                               <Minus size={14} />
+                             </button>
+                             <span className="w-12 text-center font-black text-gray-900 text-sm tracking-tight">{item.quantity}</span>
+                             <button
+                               onClick={() => updateQuantity(item._id, item.selectedWeight, 1)}
+                               className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white hover:shadow-sm text-gray-400 hover:text-brand-red transition-all"
+                             >
+                               <Plus size={14} />
+                             </button>
+                          </div>
+                          
+                          <div className="h-8 w-[1px] bg-gray-100" />
+                          
+                          <button
+                            onClick={() => removeItem(item._id, item.selectedWeight)}
+                            className="p-3 bg-red-50 text-red-300 hover:text-red-500 hover:bg-red-100 rounded-xl transition-all"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                       </div>
+                    </div>
+
+                    {/* Price */}
+                    <div className="text-center md:text-right shrink-0">
+                       <p className="text-sm font-black text-gray-400 uppercase tracking-widest mb-1">Batch Value</p>
+                       <p className="text-3xl font-heading font-black text-gray-900 leading-none tracking-tight">₹{item.selectedPrice * item.quantity}</p>
+                    </div>
+                  </m.div>
+                ))}
+              </m.div>
+
+              {/* Summary Card */}
+              <m.div 
+                variants={fadeUp}
+                initial="hidden"
+                animate="visible"
+                className="lg:col-span-1 sticky top-32"
+              >
+                <div className="luxury-card bg-gray-900 p-10 text-white relative overflow-hidden group shadow-2xl">
+                   <div className="relative z-10 space-y-10">
+                      <div className="space-y-2">
+                         <h2 className="text-2xl font-heading font-black tracking-tight">Investment Summary</h2>
+                         <p className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-red">Allredz Premium Vault</p>
+                      </div>
+
+                      <div className="space-y-6">
+                         <div className="flex justify-between items-center text-xs font-black uppercase tracking-widest text-gray-400">
+                            <span>Product Value</span>
+                            <span className="text-white">₹{total}</span>
+                         </div>
+                         <div className="flex justify-between items-center text-xs font-black uppercase tracking-widest text-gray-400">
+                            <span>Distribution Fee</span>
+                            <span className="text-emerald-500 italic">Curating...</span>
+                         </div>
+                         <div className="h-[1px] bg-white/10" />
+                         <div className="flex justify-between items-end">
+                            <span className="text-sm font-heading font-black tracking-widest uppercase text-brand-red">Total Worth</span>
+                            <span className="text-4xl font-heading font-black tracking-tighter text-white">₹{total}</span>
+                         </div>
+                      </div>
+
+                      <div className="space-y-4 pt-4">
+                         <button
+                           onClick={() => navigate("/checkout")}
+                           className="premium-button w-full bg-brand-red text-white py-6 hover:bg-white hover:text-gray-900 group shadow-2xl shadow-brand-red/20"
+                         >
+                           Acquire Treasury <ArrowRight size={18} className="ml-3 group-hover:translate-x-2 transition-transform" />
+                         </button>
+                         
+                         <div className="flex items-center justify-center gap-4 text-gray-500 text-[9px] font-black uppercase tracking-widest italic">
+                            <ShieldCheck size={12} /> SSL Secure Authentication
+                         </div>
+                      </div>
+                   </div>
+
+                   {/* Abstract Decor */}
+                   <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-brand-red/10 rounded-full blur-[100px] pointer-events-none" />
+                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-red to-transparent opacity-50" />
+                </div>
+                
+                <div className="mt-8 luxury-card bg-white p-6 flex items-center gap-4 shadow-sm border border-gray-100">
+                   <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-500">
+                      <CreditCard size={18} />
+                   </div>
+                   <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 leading-tight">
+                      Express Indian <br /> Distribution Channels
+                   </p>
+                </div>
+              </m.div>
             </div>
-          </div>
-        )}
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
+import { LazyMotion, domAnimation, AnimatePresence, motion } from "framer-motion";
 
 // Layouts
 import Navbar from "./components/layout/Navbar";
@@ -10,6 +11,13 @@ import Home from "./pages/Home";
 import Products from "./pages/Products";
 import AboutUs from "./pages/About";
 import Contact from "./pages/Contact";
+import Recipes from "./pages/Recipes";
+import SpiceProcess from "./pages/SpiceProcess";
+import FounderMessage from "./pages/FounderMessage";
+import IngredientsShowcase from "./pages/IngredientsShowcase";
+import StatsCounter from "./pages/StatsCounter";
+import Testimonials from "./pages/Testimonials";
+import FAQ from "./pages/FAQ";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderSummary from "./pages/OrderSummary";
@@ -41,90 +49,115 @@ const App = () => {
   const hideLayout = location.pathname.startsWith("/dashboardlayout");
 
   return (
-    <>
-      {!hideLayout && <Navbar />}
+    <LazyMotion features={domAnimation}>
+      <div className="relative w-full overflow-x-hidden selection:bg-brand-red selection:text-white">
+        {!hideLayout && <Navbar />}
 
-      <Routes>
-        {/* 🌐 Public Routes */}
-        <Route
-          path="/"
-          element={
-            <>
-              <Home />
-              <Products />
-              <AboutUs />
-              <Contact />
-            </>
-          }
-        />
-        <Route path="/products" element={<Products />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route
-          path="/checkout"
-          element={
-            <ProtectedRoute>
-              <Checkout />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/ordersummary"
-          element={
-            <ProtectedRoute>
-              <OrderSummary />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/order-success" element={<OrderSuccess />} />
-        <Route path="/products/list" element={<ProductList />} />
+        <AnimatePresence mode="wait">
+          <motion.main
+            key={location.pathname}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="w-full"
+          >
+            <Suspense fallback={
+              <div className="h-screen w-full flex items-center justify-center bg-[#faf9f6]">
+                <div className="w-12 h-12 border-4 border-brand-red border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            }>
+              <Routes location={location}>
+                {/* 🌐 Public Routes */}
+                <Route
+                  path="/"
+                  element={
+                    <div className="flex flex-col">
+                      <Home />
+                      <Products />
+                      <SpiceProcess />
+                      <IngredientsShowcase />
+                      <StatsCounter />
+                      <FounderMessage />
+                      <Recipes />
+                      <Testimonials />
+                      <FAQ />
+                      <AboutUs />
+                      <Contact />
+                    </div>
+                  }
+                />
+                <Route path="/products" element={<Products />} />
+                <Route path="/about" element={<AboutUs />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route
+                  path="/checkout"
+                  element={
+                    <ProtectedRoute>
+                      <Checkout />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/ordersummary"
+                  element={
+                    <ProtectedRoute>
+                      <OrderSummary />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/order-success" element={<OrderSuccess />} />
+                <Route path="/products/list" element={<ProductList />} />
 
-        {/* ⭐ Auth Routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
+                {/* ⭐ Auth Routes */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/admin-login" element={<AdminLogin />} />
 
-        {/* 👤 User Dashboard */}
-        <Route
-          path="/user-dashboard"
-          element={
-            <ProtectedRoute>
-              <UserDashboard />
-            </ProtectedRoute>
-          }
-        />
+                {/* 👤 User Dashboard */}
+                <Route
+                  path="/user-dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <UserDashboard />
+                    </ProtectedRoute>
+                  }
+                />
 
-        {/* 🧑‍💼 Protected Dashboard Routes */}
-        <Route
-          path="/dashboardlayout/*" // ✅ Add /* for nested routes
-          element={
-            <ProtectedRoute adminOnly={true}>
-              <DashboardLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route
-            index
-            element={
-              <h2 className="text-2xl font-bold">Welcome to Dashboard</h2>
-            }
-          />
-          <Route path="products" element={<DashboardProducts />} />
-          <Route path="products/add" element={<ProductAdd />} />
-          <Route path="products/edit/:id" element={<EditProduct />} />
-          <Route path="orders" element={<Orders />} />
-          <Route path="users" element={<Users />} />
-          <Route path="settings" element={<Settings />} />
-        </Route>
+                {/* 🧑‍💼 Protected Dashboard Routes */}
+                <Route
+                  path="/dashboardlayout/*" // ✅ Add /* for nested routes
+                  element={
+                    <ProtectedRoute adminOnly={true}>
+                      <DashboardLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route
+                    index
+                    element={<DashboardProducts />}
+                  />
+                  <Route path="products" element={<DashboardProducts />} />
+                  <Route path="products/add" element={<ProductAdd />} />
+                  <Route path="products/edit/:id" element={<EditProduct />} />
+                  <Route path="orders" element={<Orders />} />
+                  <Route path="users" element={<Users />} />
+                  <Route path="settings" element={<Settings />} />
+                </Route>
 
-        {/* ❌ 404 Page */}
-        <Route path="*" element={<h1 className="p-10">Page Not Found</h1>} />
-      </Routes>
+                {/* ❌ 404 Page */}
+                <Route path="*" element={<h1 className="p-10">Page Not Found</h1>} />
+              </Routes>
+            </Suspense>
+          </motion.main>
+        </AnimatePresence>
 
-      {!hideLayout && <Footer />}
-    </>
+        {!hideLayout && <Footer />}
+      </div>
+    </LazyMotion>
   );
 };
 
 export default App;
+

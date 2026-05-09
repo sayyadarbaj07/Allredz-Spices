@@ -1,298 +1,189 @@
 import React, { useState } from "react";
-import {
-  Facebook,
-  Instagram,
-  Twitter,
-  Mail,
-  Phone,
-  MapPin,
-  CreditCard,
+import { Link } from "react-router-dom";
+import { 
+  Facebook, 
+  Instagram, 
+  Twitter, 
+  Mail, 
+  MapPin, 
+  Phone, 
+  ArrowUp,
   ShieldCheck,
+  CreditCard
 } from "lucide-react";
+import logo from "../assets/logo.png";
+import { motion, m, AnimatePresence } from "framer-motion";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
 
-// Main component, adhering to the single-file mandate for React apps.
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const { fadeUp, staggerContainer, viewportSettings } = useScrollAnimation();
+  const currentYear = new Date().getFullYear();
 
-  const handleSubscribe = () => {
-    // This would typically send the email to a backend service.
-    // For this demo, we'll just log a message.
-    console.log("Subscription request sent!");
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
     setShowConfirmation(true);
   };
 
   return (
-    <div className="bg-gray-100 font-sans">
-      <footer className="bg-[#8B0000] text-gray-200 py-16 px-6 sm:px-12 rounded-t-2xl">
-        <div className="max-w-7xl mx-auto">
-          {/* Main Footer Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-red-700 pb-12">
-            {/* Brand Identity */}
-            <div className="col-span-1 md:col-span-2 lg:col-span-1">
-              {/* Yahan aap apna brand logo daal sakte hain. */}
-              {/* Yahan aap apne brand ka logo daal sakte hain. Abhi, ek demo image di gayi hai. */}
-              <img
-                src="/src/assets/logo.png"
-                alt="Allredz Spices Logo"
-                className="mb-8 rounded-lg shadow-lg h-12 w-auto object-contain"
-                onError={(e) => { e.target.style.display='none'; }}
-              />
-              <p className="text-sm leading-relaxed text-gray-300">
-                Premium quality spices to bring exceptional flavor and aroma to
-                your dishes. Your taste, our passion.
-              </p>
+    <footer className="bg-brand-red text-white pt-24 pb-12 relative overflow-hidden">
+      {/* Background Cinematic Texture */}
+      <div className="absolute inset-0 opacity-15 pointer-events-none">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-leather.png')]"></div>
+      </div>
 
-              {/* Social Media Icons */}
-              <div className="flex space-x-4 mt-6">
-                <a
-                  href="#"
-                  aria-label="Facebook"
-                  className="text-gray-300 hover:text-white transition-colors duration-200 p-2 rounded-full hover:bg-red-700"
-                >
-                  <Facebook size={22} />
-                </a>
-                <a
-                  href="#"
-                  aria-label="Instagram"
-                  className="text-gray-300 hover:text-white transition-colors duration-200 p-2 rounded-full hover:bg-red-700"
-                >
-                  <Instagram size={22} />
-                </a>
-                <a
-                  href="#"
-                  aria-label="Twitter"
-                  className="text-gray-300 hover:text-white transition-colors duration-200 p-2 rounded-full hover:bg-red-700"
-                >
-                  <Twitter size={22} />
-                </a>
+      <div className="section-container relative z-10">
+        <m.div 
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportSettings}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-12 mb-20 border-b border-white/10 pb-20"
+        >
+          {/* Brand Info */}
+          <m.div variants={fadeUp} className="space-y-8 text-center md:text-left">
+            <Link to="/" className="inline-flex items-center gap-4 group">
+              <div className="h-16 w-16 rounded-full bg-white flex items-center justify-center p-1 shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                <img src={logo} alt="Logo" className="w-full h-full object-cover" />
               </div>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <h3 className="text-lg font-bold text-white mb-6 uppercase tracking-wider">
-                Quick Links
-              </h3>
-              <ul className="space-y-4 text-sm">
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors duration-200"
-                  >
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors duration-200"
-                  >
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors duration-200"
-                  >
-                    Our Products
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors duration-200"
-                  >
-                    Blog & Recipes
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors duration-200"
-                  >
-                    FAQ
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Help & Support */}
-            <div>
-              <h3 className="text-lg font-bold text-white mb-6 uppercase tracking-wider">
-                Help & Support
-              </h3>
-              <ul className="space-y-4 text-sm">
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors duration-200"
-                  >
-                    Contact Us
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors duration-200"
-                  >
-                    Shipping & Returns
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors duration-200"
-                  >
-                    Order Tracking
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors duration-200"
-                  >
-                    Customer Service
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Newsletter Subscription */}
-            <div>
-              <h3 className="text-lg font-bold text-white mb-6 uppercase tracking-wider">
-                Newsletter
-              </h3>
-              <p className="text-sm text-gray-300 mb-4">
-                Subscribe for the latest offers & updates!
-              </p>
-              <form className="flex flex-col space-y-3">
-                <input
-                  type="email"
-                  placeholder="Your email address"
-                  className="w-full px-4 py-3 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-200"
-                />
-                <button
-                  type="button"
-                  onClick={handleSubscribe}
-                  className="w-full bg-red-600 hover:bg-red-500 transition-colors duration-200 text-white font-semibold py-3 px-6 rounded-md shadow-lg"
-                >
-                  Subscribe
-                </button>
-              </form>
-            </div>
-          </div>
-
-          {/* Additional Info Section */}
-          <div className="pt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Contact Info */}
-            <div>
-              <h3 className="text-lg font-bold text-white mb-4 uppercase tracking-wider">
-                Our Location
-              </h3>
-              <div className="space-y-2 text-sm">
-                <p className="flex items-center">
-                  <MapPin size={18} className="mr-3 text-red-400" />
-                  <span className="text-gray-300">
-                    123 Spices Lane, Flavorville, USA
-                  </span>
-                </p>
-                <p className="flex items-center">
-                  <Phone size={18} className="mr-3 text-red-400" />
-                  <a
-                    href="tel:+15551234567"
-                    className="hover:text-white transition-colors"
-                  >
-                    +1 (555) 123-4567
-                  </a>
-                </p>
-                <p className="flex items-center">
-                  <Mail size={18} className="mr-3 text-red-400" />
-                  <a
-                    href="mailto:info@allredz.com"
-                    className="hover:text-white transition-colors"
-                  >
-                    info@allredz.com
-                  </a>
-                </p>
+              <div className="flex flex-col text-left">
+                <span className="text-2xl font-display font-black tracking-widest leading-none">ALLREDZ</span>
+                <span className="text-[9px] font-body font-bold tracking-[0.4em] uppercase text-yellow-400 mt-1">Spices</span>
               </div>
-            </div>
-
-            {/* Payment Options */}
-            <div>
-              <h3 className="text-lg font-bold text-white mb-4 uppercase tracking-wider">
-                Secure Payments
-              </h3>
-              <div className="flex space-x-3 items-center">
-                <CreditCard size={32} className="text-white" />
-                <ShieldCheck size={32} className="text-white" />
-                {/* Asli rangon wale demo logos */}
-                <span className="px-3 py-1 bg-[#1a187a] text-white text-xs font-bold rounded-md">VISA</span>
-                <span className="px-3 py-1 bg-[#eb001b] text-white text-xs font-bold rounded-md">MC</span>
-              </div>
-            </div>
-
-            {/* Legal & Policies */}
-            <div>
-              <h3 className="text-lg font-bold text-white mb-4 uppercase tracking-wider">
-                Legal
-              </h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors duration-200"
-                  >
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors duration-200"
-                  >
-                    Terms of Service
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="hover:text-white transition-colors duration-200"
-                  >
-                    Cookie Policy
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Copyright Section */}
-          <div className="pt-6 text-center text-gray-400 text-sm border-t border-red-700 mt-8">
-            © {currentYear} Allredz Spices. All rights reserved.
-          </div>
-        </div>
-      </footer>
-      {showConfirmation && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-8 rounded-lg shadow-xl text-center max-w-sm">
-            <h4 className="2xl font-bold mb-4 text-gray-900">
-              Subscription Confirmed!
-            </h4>
-            <p className="text-gray-700 mb-6">
-              Thank you for subscribing! We'll send you our latest offers and
-              updates.
+            </Link>
+            <p className="text-white/60 font-body text-sm leading-relaxed max-w-xs mx-auto md:mx-0">
+              Preserving the authentic heritage of Indian spices since 1985. 
+              Hand-picked, stone-ground, and delivered with passion.
             </p>
-            <button
-              onClick={() => setShowConfirmation(false)}
-              className="bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-md transition-colors"
+            <div className="flex items-center justify-center md:justify-start gap-4">
+              {[Facebook, Instagram, Twitter].map((Icon, i) => (
+                <a key={i} href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-yellow-400 hover:text-brand-red hover:border-yellow-400 transition-all duration-500">
+                  <Icon size={18} />
+                </a>
+              ))}
+            </div>
+          </m.div>
+
+          {/* Quick Links */}
+          <m.div variants={fadeUp} className="text-center md:text-left">
+            <h4 className="text-sm font-display font-bold uppercase tracking-[0.3em] text-yellow-400 mb-8">Experience</h4>
+            <ul className="space-y-4">
+              {["Home", "Our Spices", "Recipes", "Our Story", "Contact"].map((link) => (
+                <li key={link}>
+                  <Link to="#" className="text-white/60 hover:text-white transition-colors text-[10px] font-body font-bold uppercase tracking-widest flex items-center justify-center md:justify-start gap-2 group">
+                    <span className="w-0 group-hover:w-4 h-[1px] bg-yellow-400 transition-all duration-500"></span>
+                    {link}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </m.div>
+
+          {/* Newsletter */}
+          <m.div variants={fadeUp} className="text-center md:text-left lg:col-span-2 max-w-md lg:ml-auto">
+            <h4 className="text-sm font-display font-bold uppercase tracking-[0.3em] text-yellow-400 mb-8">Newsletter</h4>
+            <p className="text-sm text-white/60 font-body leading-relaxed mb-8 italic">
+              Join our inner circle for exclusive recipes, spice lore, and seasonal releases.
+            </p>
+            <form onSubmit={handleSubscribe} className="space-y-4">
+              <div className="relative group">
+                <input 
+                  type="email" 
+                  placeholder="Your Email Address" 
+                  required
+                  className="w-full bg-white/5 border border-white/10 px-8 py-5 rounded-2xl focus:outline-none focus:border-yellow-400/50 text-[10px] uppercase tracking-widest transition-all group-hover:bg-white/10"
+                />
+                <button 
+                  type="submit"
+                  className="absolute right-2 top-2 bottom-2 bg-yellow-400 text-brand-red px-6 rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-white transition-colors"
+                >
+                  Join
+                </button>
+              </div>
+              <p className="text-[9px] text-white/30 uppercase tracking-[0.2em] flex items-center justify-center md:justify-start gap-2">
+                <ShieldCheck size={12} /> Secure & Private. Unsubscribe anytime.
+              </p>
+            </form>
+          </m.div>
+        </m.div>
+
+        {/* Footer Bottom */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-10">
+          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12">
+            <p className="text-[10px] text-white/30 font-body font-black uppercase tracking-widest">
+              © {currentYear} Allredz Spices. Premium Tradition.
+            </p>
+            <div className="flex gap-8 text-[10px] text-white/30 font-black uppercase tracking-widest">
+              <Link to="#" className="hover:text-yellow-400 transition-colors">Privacy</Link>
+              <Link to="#" className="hover:text-yellow-400 transition-colors">Terms</Link>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-8">
+            <div className="flex items-center gap-3 opacity-30 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+               <span className="text-[9px] font-black uppercase tracking-widest mr-2">Secure Payments</span>
+               <div className="px-2 py-0.5 border border-white/20 rounded text-[8px] font-bold">VISA</div>
+               <div className="px-2 py-0.5 border border-white/20 rounded text-[8px] font-bold">MASTER</div>
+               <div className="px-2 py-0.5 border border-white/20 rounded text-[8px] font-bold">UPI</div>
+            </div>
+
+            <button 
+              onClick={scrollToTop}
+              className="group flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-white/40 hover:text-white transition-all"
             >
-              Close
+              <span className="hidden sm:inline">Back to top</span> 
+              <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-yellow-400 group-hover:text-brand-red group-hover:border-yellow-400 transition-all duration-500">
+                <ArrowUp size={18} />
+              </div>
             </button>
           </div>
         </div>
-      )}
-    </div>
+      </div>
+
+      {/* Confirmation Modal */}
+      <AnimatePresence>
+        {showConfirmation && (
+          <m.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/90 backdrop-blur-xl"
+          >
+            <m.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-white p-12 rounded-[3.5rem] max-w-sm text-center space-y-8 shadow-2xl relative overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-red to-yellow-400" />
+              <div className="w-24 h-24 bg-brand-red text-white rounded-full flex items-center justify-center mx-auto shadow-xl">
+                 <Mail size={40} />
+              </div>
+              <div className="space-y-4">
+                <h4 className="text-4xl font-heading font-black text-gray-900 leading-tight">Welcome to the Inner Circle</h4>
+                <p className="text-gray-500 font-body text-sm leading-relaxed">
+                  Your journey into the world of authentic spices has begun. 
+                  Expect a special surprise in your inbox soon.
+                </p>
+              </div>
+              <button 
+                 onClick={() => setShowConfirmation(false)}
+                 className="w-full bg-gray-900 text-white py-5 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-brand-red transition-colors shadow-lg"
+              >
+                 Close Gateway
+              </button>
+            </m.div>
+          </m.div>
+        )}
+      </AnimatePresence>
+      
+      {/* Background Decorative Glow */}
+      <div className="absolute -bottom-1/2 left-1/2 -translate-x-1/2 w-full h-full bg-black/60 rounded-full blur-[150px] -z-10" />
+    </footer>
   );
 };
 
