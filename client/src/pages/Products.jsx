@@ -139,6 +139,7 @@ const Products = () => {
                     }
                     alt={product.name}
                     loading="lazy"
+                    decoding="async"
                     width={300}
                     height={375}
                     className="relative z-10 w-full h-full object-contain drop-shadow-2xl group-hover:scale-110 transition-transform duration-700 ease-out"

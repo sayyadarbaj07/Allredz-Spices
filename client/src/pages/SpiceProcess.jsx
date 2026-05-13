@@ -81,27 +81,29 @@ const SpiceProcess = () => {
                 tabIndex="0"
               >
                 <div 
-                  className={`p-10 luxury-card h-full space-y-8 bg-white border-none shadow-[0_20px_50px_rgba(0,0,0,0.03)] transition-all duration-700 ease-in-out touch-none
-                    ${isActive ? 'bg-brand-red -translate-y-4 shadow-2xl shadow-brand-red/20' : 'group-hover:bg-brand-red group-hover:-translate-y-4 group-hover:shadow-2xl group-hover:shadow-brand-red/20'}
+                  className={`p-10 luxury-card h-full space-y-8 transition-all duration-700 ease-in-out touch-none relative z-10 border-none
+                    ${isActive 
+                      ? '!bg-brand-red -translate-y-4 shadow-[0_30px_70px_-15px_rgba(139,28,28,0.4)]' 
+                      : 'bg-white group-hover:!bg-brand-red group-hover:-translate-y-4 group-hover:shadow-[0_30px_70px_-15px_rgba(139,28,28,0.4)]'}
                   `}
                 >
                   <div className="relative">
                     <span 
                       className={`absolute -top-6 -left-6 text-6xl font-heading font-black transition-colors duration-700
-                        ${isActive ? 'text-white/10' : 'text-gray-50 group-hover:text-white/10'}
+                        ${isActive ? 'text-white/10' : 'text-gray-100 group-hover:text-white/10'}
                       `}
                     >
                       0{i + 1}
                     </span>
                     <div 
                       className={`relative z-10 w-20 h-20 rounded-2xl flex items-center justify-center shadow-sm transition-all duration-500
-                        ${isActive ? 'bg-white rotate-[10deg]' : 'bg-brand-red/5 group-hover:bg-white group-hover:rotate-[10deg]'}
+                        ${isActive ? 'bg-white rotate-[12deg]' : 'bg-brand-red/5 group-hover:bg-white group-hover:rotate-[12deg]'}
                       `}
                     >
                       <p.icon 
                         size={36} 
-                        className={`text-brand-red transition-transform duration-500
-                          ${isActive ? 'scale-110' : 'group-hover:scale-110'}
+                        className={`transition-all duration-500
+                          ${isActive ? 'text-brand-red scale-110' : 'text-brand-red group-hover:text-brand-red group-hover:scale-110'}
                         `} 
                       />
                     </div>
@@ -109,7 +111,7 @@ const SpiceProcess = () => {
 
                   <div className="space-y-4">
                     <h3 
-                      className={`text-2xl font-heading font-bold transition-colors duration-500
+                      className={`text-2xl font-heading font-black transition-colors duration-500
                         ${isActive ? 'text-white' : 'text-gray-900 group-hover:text-white'}
                       `}
                     >
@@ -135,7 +137,7 @@ const SpiceProcess = () => {
                   {isActive && (
                     <m.div 
                       layoutId="active-indicator"
-                      className="absolute top-4 right-4 w-2 h-2 rounded-full bg-white animate-pulse"
+                      className="absolute top-4 right-4 w-2 h-2 rounded-full bg-yellow-400 animate-pulse"
                     />
                   )}
                 </div>

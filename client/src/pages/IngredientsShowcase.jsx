@@ -93,6 +93,7 @@ const IngredientsShowcase = () => {
                     ${isActive ? 'scale-125' : 'group-hover:scale-125'}
                   `}
                   loading="lazy"
+                  decoding="async"
                 />
                 
                 {/* Gradient Overlays */}

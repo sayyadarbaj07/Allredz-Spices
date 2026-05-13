@@ -105,6 +105,7 @@ const Hero = () => {
                 src={chikanmasala}
                 alt="Premium Indian Spices"
                 loading="lazy"
+                decoding="async"
                 width={384}
                 height={600}
                 className="w-full h-full object-cover scale-105 md:group-hover:scale-125 transition-transform duration-[2s] ease-out"

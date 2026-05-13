@@ -42,6 +42,8 @@ import UserDashboard from "./pages/UserDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import OrderSuccess from "./pages/OrderSuccess";
 
+import LazySection from "./components/common/LazySection";
+
 const App = () => {
   const location = useLocation();
 
@@ -74,16 +76,16 @@ const App = () => {
                   element={
                     <div className="flex flex-col">
                       <Home />
-                      <Products />
-                      <SpiceProcess />
-                      <IngredientsShowcase />
-                      <StatsCounter />
-                      <FounderMessage />
-                      <Recipes />
-                      <Testimonials />
-                      <FAQ />
-                      <AboutUs />
-                      <Contact />
+                      <LazySection height="800px"><Products /></LazySection>
+                      <LazySection height="1200px"><SpiceProcess /></LazySection>
+                      <LazySection height="1600px"><IngredientsShowcase /></LazySection>
+                      <LazySection height="400px"><StatsCounter /></LazySection>
+                      <LazySection height="700px"><FounderMessage /></LazySection>
+                      <LazySection height="1500px"><Recipes /></LazySection>
+                      <LazySection height="600px"><Testimonials /></LazySection>
+                      <LazySection height="600px"><FAQ /></LazySection>
+                      <LazySection height="800px"><AboutUs /></LazySection>
+                      <LazySection height="800px"><Contact /></LazySection>
                     </div>
                   }
                 />

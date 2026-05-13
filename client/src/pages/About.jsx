@@ -74,6 +74,7 @@ const AboutUs = () => {
                   src={spiceImg} 
                   alt="Authentic Spices" 
                   loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover scale-110 md:group-hover:scale-125 transition-transform duration-[2s] ease-out" 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-red/20 to-transparent" />

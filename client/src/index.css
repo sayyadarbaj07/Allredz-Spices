@@ -45,7 +45,7 @@
   body {
     @apply bg-[#faf9f6] font-body antialiased text-gray-900 selection:bg-brand-red selection:text-white m-0 p-0;
     overflow-x: hidden !important;
-    width: 100vw;
+    width: 100%;
     -webkit-tap-highlight-color: transparent;
     -webkit-overflow-scrolling: touch;
   }
@@ -99,7 +99,7 @@
 
   .luxury-card {
     @apply bg-white rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_30px_70px_rgba(139,28,28,0.12)] transition-all duration-700 border border-gray-50;
-    will-change: transform, shadow;
+    will-change: transform;
   }
 
   .glass-card {
@@ -126,6 +126,30 @@
     transform: translateZ(0);
     backface-visibility: hidden;
     will-change: transform, opacity;
+  }
+
+  /* Mobile Performance Overrides */
+  @media (max-width: 768px) {
+    .glass-card {
+      @apply backdrop-blur-md; /* Reduced from xl */
+    }
+
+    .floating-glow {
+      @apply blur-[40px] opacity-10; /* Reduced blur and opacity */
+      animation: none; /* Disable animation on mobile to save CPU */
+    }
+
+    .luxury-card {
+      will-change: auto; /* Fully disable will-change on mobile */
+    }
+
+    .gpu-accelerated {
+      will-change: auto;
+    }
+
+    .glow-text {
+      text-shadow: 0 0 10px rgba(217, 119, 6, 0.3);
+    }
   }
 }
 
