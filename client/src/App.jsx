@@ -63,8 +63,9 @@ const App = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="w-full min-h-screen"
+            className="w-full min-h-screen relative"
           >
+
 
             <Suspense fallback={
               <div className="h-screen w-full flex items-center justify-center bg-[#faf9f6]">

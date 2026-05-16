@@ -73,10 +73,11 @@ const Navbar = () => {
     <nav 
       className={`fixed top-0 left-0 w-full z-[1000] transition-all duration-500 ease-in-out ${
         isScrolled 
-          ? "bg-brand-red/90 backdrop-blur-md py-2 shadow-2xl" 
+          ? `bg-brand-red/90 ${window.innerWidth > 768 ? 'backdrop-blur-md' : ''} py-2 shadow-2xl` 
           : "bg-brand-red py-4 md:py-6 shadow-md"
       }`}
     >
+
       <div className="section-container flex justify-between items-center">
         {/* Logo and Brand Name */}
         <Link to="/" className="flex items-center gap-3 md:gap-5 group" onClick={() => setIsOpen(false)}>

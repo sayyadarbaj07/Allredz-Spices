@@ -6,25 +6,27 @@ import { useInView } from "framer-motion";
  * Only renders its children when they enter the viewport.
  * Helps reduce initial DOM size and improves scroll performance.
  */
-const LazySection = ({ children, height = "400px" }) => {
+const LazySection = ({ children, height = "400px", offset = "300px" }) => {
   const ref = useRef(null);
-  
-  // Use CSS-based lazy rendering (content-visibility) which is much more stable 
-  // for scroll performance and layout consistency than JS-based conditional rendering.
+  const isInView = useInView(ref, { 
+    once: true, 
+    margin: `0px 0px ${offset} 0px` 
+  });
+
   const style = {
-    contentVisibility: "auto",
-    containIntrinsicSize: `auto ${height}`,
     minHeight: height,
     width: "100%",
+    position: "relative",
   };
 
   return (
     <div ref={ref} style={style}>
-      {children}
+      {isInView ? children : null}
     </div>
   );
 };
 
 export default React.memo(LazySection);
+
 
 

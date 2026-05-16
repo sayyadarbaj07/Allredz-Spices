@@ -138,37 +138,39 @@
   /* Mobile Performance Overrides */
   @media (max-width: 768px) {
     .glass-card {
-      @apply backdrop-blur-md; /* Reduced from xl */
+      @apply backdrop-blur-none bg-white; /* Disable backdrop-blur on mobile */
     }
 
     .floating-glow {
-      @apply blur-[40px] opacity-10; /* Reduced blur and opacity */
-      animation: none; /* Disable animation on mobile to save CPU */
+      @apply blur-[20px] opacity-5; /* Further reduced blur and opacity */
+      animation: none;
+      will-change: auto;
     }
 
     .luxury-card {
-      will-change: auto; /* Fully disable will-change on mobile */
-      @apply shadow-md hover:shadow-lg rounded-[2rem]; /* Simplified shadows */
-      transition-duration: 300ms; /* Faster transitions */
+      will-change: auto; 
+      @apply shadow-none border-gray-100 rounded-[2rem]; /* Remove shadow on mobile for performance */
+      transition-duration: 200ms; 
     }
 
     .gpu-accelerated {
       will-change: auto;
-      transform: none; /* Avoid unnecessary layers if not needed */
+      transform: none; 
     }
 
     .glow-text {
-      text-shadow: none; /* Disable text-shadow on mobile */
+      text-shadow: none; 
     }
 
     .premium-button {
-      @apply shadow-md hover:shadow-md; /* Reduce shadow complexity */
+      @apply shadow-md hover:shadow-md; 
     }
 
     .section-container {
-      @apply px-4; /* Ensure consistent padding */
+      @apply px-4; 
     }
   }
+
 }
 
 

@@ -78,17 +78,21 @@ export const useScrollAnimation = () => {
 
   const clipPathReveal = {
     hidden: { 
-      clipPath: isMobile ? "inset(0% 0% 0% 0%)" : "inset(100% 0% 0% 0%)", 
       opacity: 0,
-      y: isMobile ? 10 : 0
+      y: isMobile ? 10 : 0,
+      clipPath: isMobile ? "none" : "inset(100% 0% 0% 0%)", 
     },
     visible: { 
-      clipPath: "inset(0% 0% 0% 0%)", 
       opacity: 1,
       y: 0,
-      transition: { duration: isMobile ? 0.3 : 1.2, ease: "easeOut" }
+      clipPath: isMobile ? "none" : "inset(0% 0% 0% 0%)", 
+      transition: { 
+        duration: isMobile ? 0.3 : 1.2, 
+        ease: "easeOut" 
+      }
     }
   };
+
 
   return {
     viewportSettings,
