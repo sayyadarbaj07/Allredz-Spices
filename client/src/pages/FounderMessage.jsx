@@ -5,7 +5,7 @@ import { useScrollAnimation } from "../hooks/useScrollAnimation";
 
 const FounderMessage = () => {
   const containerRef = useRef(null);
-  const { fadeUp, staggerContainer, viewportSettings } = useScrollAnimation();
+  const { fadeUp, staggerContainer, viewportSettings, isMobile } = useScrollAnimation();
   
   const { scrollYProgress } = useScroll({
     target: containerRef,

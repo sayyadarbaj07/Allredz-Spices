@@ -39,6 +39,8 @@ import OrderSuccess from "./pages/OrderSuccess";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import LazySection from "./components/common/LazySection";
+import ScrollToTop from "./components/common/ScrollToTop";
+
 
 
 const App = () => {
@@ -51,6 +53,8 @@ const App = () => {
     <LazyMotion features={domAnimation}>
       <div className="relative w-full overflow-x-hidden selection:bg-brand-red selection:text-white">
         {!hideLayout && <Navbar />}
+        <ScrollToTop />
+
 
         <AnimatePresence mode="wait">
           <motion.main
@@ -59,8 +63,9 @@ const App = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="w-full"
+            className="w-full min-h-screen"
           >
+
             <Suspense fallback={
               <div className="h-screen w-full flex items-center justify-center bg-[#faf9f6]">
                 <div className="w-12 h-12 border-4 border-brand-red border-t-transparent rounded-full animate-spin"></div>

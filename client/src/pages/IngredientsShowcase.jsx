@@ -38,7 +38,7 @@ const ingredients = [
 ];
 
 const IngredientsShowcase = () => {
-  const { fadeUp, staggerContainer, viewportSettings, clipPathReveal } = useScrollAnimation();
+  const { fadeUp, staggerContainer, viewportSettings, clipPathReveal, isMobile } = useScrollAnimation();
   const [activeCard, setActiveCard] = useState(null);
 
   const handleInteraction = (index) => {

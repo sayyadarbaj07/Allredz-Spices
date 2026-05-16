@@ -44,7 +44,7 @@ const Counter = ({ value, suffix }) => {
 };
 
 const StatsCounter = () => {
-  const { fadeUp, staggerContainer, viewportSettings } = useScrollAnimation();
+  const { fadeUp, staggerContainer, viewportSettings, isMobile } = useScrollAnimation();
 
   return (
     <section className="py-20 md:py-32 bg-brand-red text-white relative overflow-hidden">

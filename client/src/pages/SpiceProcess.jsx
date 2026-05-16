@@ -27,7 +27,7 @@ const processes = [
 ];
 
 const SpiceProcess = () => {
-  const { fadeUp, staggerContainer, viewportSettings } = useScrollAnimation();
+  const { fadeUp, staggerContainer, viewportSettings, isMobile } = useScrollAnimation();
   const [activeCard, setActiveCard] = useState(null);
 
   const handleInteraction = (index) => {
