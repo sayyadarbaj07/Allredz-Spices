@@ -64,7 +64,7 @@ const SpiceProcess = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: isMobile ? 0.05 : 0.1 }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
         >
           {processes.map((p, i) => {
@@ -75,21 +75,21 @@ const SpiceProcess = () => {
                 key={i}
                 variants={fadeUp}
                 className="group relative cursor-pointer outline-none"
-                onMouseEnter={() => window.innerWidth >= 1024 && setActiveCard(i)}
-                onMouseLeave={() => window.innerWidth >= 1024 && setActiveCard(null)}
+                onMouseEnter={() => !isMobile && setActiveCard(i)}
+                onMouseLeave={() => !isMobile && setActiveCard(null)}
                 onClick={() => handleInteraction(i)}
                 tabIndex="0"
               >
                 <div 
-                  className={`p-10 luxury-card h-full space-y-8 transition-all duration-700 ease-in-out touch-none relative z-10 border-none
+                  className={`p-10 luxury-card h-full space-y-8 transition-all duration-500 ease-in-out touch-none relative z-10 border-none
                     ${isActive 
-                      ? '!bg-brand-red -translate-y-4 shadow-[0_30px_70px_-15px_rgba(139,28,28,0.4)]' 
-                      : 'bg-white group-hover:!bg-brand-red group-hover:-translate-y-4 group-hover:shadow-[0_30px_70px_-15px_rgba(139,28,28,0.4)]'}
+                      ? `!bg-brand-red ${isMobile ? '-translate-y-2 shadow-lg' : '-translate-y-4 shadow-[0_30px_70px_-15px_rgba(139,28,28,0.4)]'}` 
+                      : `bg-white group-hover:!bg-brand-red group-hover:-translate-y-4 group-hover:shadow-[0_30px_70px_-15px_rgba(139,28,28,0.4)]`}
                   `}
                 >
                   <div className="relative">
                     <span 
-                      className={`absolute -top-6 -left-6 text-6xl font-heading font-black transition-colors duration-700
+                      className={`absolute -top-6 -left-6 text-6xl font-heading font-black transition-colors duration-500
                         ${isActive ? 'text-white/10' : 'text-gray-100 group-hover:text-white/10'}
                       `}
                     >
@@ -126,25 +126,25 @@ const SpiceProcess = () => {
                     </p>
                   </div>
 
-                  {/* Corner Decoration */}
-                  <div 
-                    className={`absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-brand-red/5 to-transparent rounded-tl-full transition-opacity duration-700
-                      ${isActive ? 'opacity-0' : 'opacity-100 group-hover:opacity-0'}
-                    `} 
-                  />
+                  {/* Corner Decoration (Hidden on mobile) */}
+                  {!isMobile && (
+                    <div 
+                      className={`absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-brand-red/5 to-transparent rounded-tl-full transition-opacity duration-700
+                        ${isActive ? 'opacity-0' : 'opacity-100 group-hover:opacity-0'}
+                      `} 
+                    />
+                  )}
                   
                   {/* Active Indicator for Mobile */}
-                  {isActive && (
-                    <m.div 
-                      layoutId="active-indicator"
-                      className="absolute top-4 right-4 w-2 h-2 rounded-full bg-yellow-400 animate-pulse"
-                    />
+                  {isActive && isMobile && (
+                    <div className="absolute top-4 right-4 w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
                   )}
                 </div>
               </m.div>
             );
           })}
         </m.div>
+
       </div>
     </section>
   );

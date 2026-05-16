@@ -174,10 +174,11 @@ const Navbar = () => {
           {/* Mobile Menu Toggle */}
           <button 
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-white p-2 hover:bg-white/10 rounded-full transition-all active:scale-90 z-[110]"
+            className="lg:hidden text-white p-2 hover:bg-white/10 rounded-full transition-all active:scale-90 z-[1200]"
           >
             {isOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
+
         </div>
       </div>
 

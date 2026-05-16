@@ -12,7 +12,8 @@ const FounderMessage = () => {
     offset: ["start end", "end start"]
   });
 
-  const imageY = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
+  const imageY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["-10%", "10%"]);
+
 
   return (
     <section 

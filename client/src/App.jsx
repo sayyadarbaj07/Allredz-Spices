@@ -6,24 +6,24 @@ import { LazyMotion, domAnimation, AnimatePresence, motion } from "framer-motion
 import Navbar from "./components/layout/Navbar";
 import Footer from "./pages/Footer";
 
-// Public Pages
-import Home from "./pages/Home";
-import Products from "./pages/Products";
-import AboutUs from "./pages/About";
-import Contact from "./pages/Contact";
-import Recipes from "./pages/Recipes";
-import SpiceProcess from "./pages/SpiceProcess";
-import FounderMessage from "./pages/FounderMessage";
-import IngredientsShowcase from "./pages/IngredientsShowcase";
-import StatsCounter from "./pages/StatsCounter";
-import Testimonials from "./pages/Testimonials";
-import FAQ from "./pages/FAQ";
+// Public Pages (Lazy Loaded for Home)
+const Home = React.lazy(() => import("./pages/Home"));
+const Products = React.lazy(() => import("./pages/Products"));
+const AboutUs = React.lazy(() => import("./pages/About"));
+const Contact = React.lazy(() => import("./pages/Contact"));
+const Recipes = React.lazy(() => import("./pages/Recipes"));
+const SpiceProcess = React.lazy(() => import("./pages/SpiceProcess"));
+const FounderMessage = React.lazy(() => import("./pages/FounderMessage"));
+const IngredientsShowcase = React.lazy(() => import("./pages/IngredientsShowcase"));
+const StatsCounter = React.lazy(() => import("./pages/StatsCounter"));
+const Testimonials = React.lazy(() => import("./pages/Testimonials"));
+const FAQ = React.lazy(() => import("./pages/FAQ"));
+
+// Other Pages
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderSummary from "./pages/OrderSummary";
 import ProductList from "./pages/ProductList";
-
-// Dashboard Pages
 import DashboardLayout from "./pages/Dashboard/DashboardLayout";
 import Orders from "./pages/Dashboard/Orders";
 import Users from "./pages/Dashboard/Users";
@@ -31,18 +31,15 @@ import Settings from "./pages/Dashboard/Settings";
 import ProductAdd from "./pages/Dashboard/ProductAdd";
 import DashboardProducts from "./pages/Dashboard/DashboardProducts";
 import EditProduct from "./pages/Dashboard/EditProduct";
-
-// Auth Pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminLogin from "./pages/AdminLogin";
 import UserDashboard from "./pages/UserDashboard";
-
-// ProtectedRoute
-import ProtectedRoute from "./components/ProtectedRoute";
 import OrderSuccess from "./pages/OrderSuccess";
 
+import ProtectedRoute from "./components/ProtectedRoute";
 import LazySection from "./components/common/LazySection";
+
 
 const App = () => {
   const location = useLocation();

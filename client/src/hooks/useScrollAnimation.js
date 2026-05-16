@@ -11,17 +11,17 @@ export const useScrollAnimation = () => {
   // Reusable viewport settings for mobile-safe triggering
   const viewportSettings = {
     once: true,
-    margin: isMobile ? "-5% 0px -5% 0px" : "-10% 0px -10% 0px", // Less margin on mobile
-    amount: isMobile ? "some" : 0.2
+    margin: isMobile ? "0px 0px -50px 0px" : "-10% 0px -10% 0px", // Higher margin on mobile for early trigger
+    amount: isMobile ? 0.01 : 0.2 // Minimal amount on mobile to trigger sooner and avoid "stuck" feeling
   };
 
   const fadeUp = {
-    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : (isMobile ? 15 : 30) },
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : (isMobile ? 10 : 30) },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: isMobile ? 0.4 : 0.8, // Snappier on mobile
+        duration: isMobile ? 0.3 : 0.8, // Snappier on mobile
         ease: isMobile ? "easeOut" : [0.16, 1, 0.3, 1] 
       }
     }
@@ -31,7 +31,7 @@ export const useScrollAnimation = () => {
     hidden: { opacity: 0 },
     visible: { 
       opacity: 1, 
-      transition: { duration: isMobile ? 0.5 : 1, ease: "easeOut" }
+      transition: { duration: isMobile ? 0.3 : 1, ease: "easeOut" }
     }
   };
 
@@ -40,8 +40,8 @@ export const useScrollAnimation = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: isMobile ? 0.05 : 0.15, // Faster stagger on mobile
-        delayChildren: isMobile ? 0.05 : 0.1
+        staggerChildren: isMobile ? 0.03 : 0.15, // Significantly faster stagger on mobile
+        delayChildren: isMobile ? 0.02 : 0.1
       }
     }
   };
@@ -52,27 +52,27 @@ export const useScrollAnimation = () => {
       opacity: 1, 
       scale: 1,
       transition: { 
-        duration: isMobile ? 0.5 : 1, 
+        duration: isMobile ? 0.4 : 1, 
         ease: isMobile ? "easeOut" : [0.34, 1.56, 0.64, 1] 
       }
     }
   };
 
   const slideInRight = {
-    hidden: { opacity: 0, x: shouldReduceMotion ? 0 : (isMobile ? 20 : 50) },
+    hidden: { opacity: 0, x: shouldReduceMotion ? 0 : (isMobile ? 15 : 50) },
     visible: { 
       opacity: 1, 
       x: 0,
-      transition: { duration: isMobile ? 0.4 : 0.8, ease: "easeOut" }
+      transition: { duration: isMobile ? 0.3 : 0.8, ease: "easeOut" }
     }
   };
 
   const slideInLeft = {
-    hidden: { opacity: 0, x: shouldReduceMotion ? 0 : (isMobile ? -20 : -50) },
+    hidden: { opacity: 0, x: shouldReduceMotion ? 0 : (isMobile ? -15 : -50) },
     visible: { 
       opacity: 1, 
       x: 0,
-      transition: { duration: isMobile ? 0.4 : 0.8, ease: "easeOut" }
+      transition: { duration: isMobile ? 0.3 : 0.8, ease: "easeOut" }
     }
   };
 
@@ -80,13 +80,13 @@ export const useScrollAnimation = () => {
     hidden: { 
       clipPath: isMobile ? "inset(0% 0% 0% 0%)" : "inset(100% 0% 0% 0%)", 
       opacity: 0,
-      y: isMobile ? 20 : 0
+      y: isMobile ? 10 : 0
     },
     visible: { 
       clipPath: "inset(0% 0% 0% 0%)", 
       opacity: 1,
       y: 0,
-      transition: { duration: isMobile ? 0.4 : 1.2, ease: "easeOut" }
+      transition: { duration: isMobile ? 0.3 : 1.2, ease: "easeOut" }
     }
   };
 
@@ -103,3 +103,4 @@ export const useScrollAnimation = () => {
     isMobile
   };
 };
+

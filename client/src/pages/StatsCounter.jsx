@@ -67,9 +67,10 @@ const StatsCounter = () => {
               variants={fadeUp}
               className="space-y-4"
             >
-              <h3 className="text-5xl md:text-7xl lg:text-8xl font-heading font-black text-yellow-400 glow-text drop-shadow-2xl">
+              <h3 className={`text-5xl md:text-7xl lg:text-8xl font-heading font-black text-yellow-400 glow-text ${!isMobile ? 'drop-shadow-2xl' : ''}`}>
                 <Counter value={stat.value} suffix={stat.suffix} />
               </h3>
+
               <div className="w-12 h-[1px] bg-white/20 mx-auto" />
               <p className="text-[10px] md:text-xs font-body font-black uppercase tracking-[0.4em] text-white/50">
                 {stat.label}

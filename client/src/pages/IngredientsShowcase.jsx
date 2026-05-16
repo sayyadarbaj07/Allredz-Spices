@@ -71,7 +71,7 @@ const IngredientsShowcase = () => {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: isMobile ? 0.05 : 0.1 }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
         >
           {ingredients.map((ing, i) => {
@@ -79,18 +79,18 @@ const IngredientsShowcase = () => {
             return (
               <m.div
                 key={i}
-                variants={clipPathReveal}
+                variants={isMobile ? fadeUp : clipPathReveal}
                 className="relative group aspect-[4/5] sm:aspect-[3/4.5] lg:aspect-[3/5] rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl bg-gray-100 gpu-accelerated cursor-pointer"
-                onMouseEnter={() => window.innerWidth >= 1024 && setActiveCard(i)}
-                onMouseLeave={() => window.innerWidth >= 1024 && setActiveCard(null)}
+                onMouseEnter={() => !isMobile && setActiveCard(i)}
+                onMouseLeave={() => !isMobile && setActiveCard(null)}
                 onClick={() => handleInteraction(i)}
               >
-                {/* Image with Parallax Effect */}
+                {/* Image with Parallax Effect (Disabled on mobile) */}
                 <m.img 
                   src={ing.image} 
                   alt={ing.name} 
-                  className={`w-full h-full object-cover transition-transform duration-[4s] ease-out 
-                    ${isActive ? 'scale-125' : 'group-hover:scale-125'}
+                  className={`w-full h-full object-cover transition-transform duration-[2s] ease-out 
+                    ${isActive ? (isMobile ? 'scale-110' : 'scale-125') : 'group-hover:scale-125'}
                   `}
                   loading="lazy"
                   decoding="async"
@@ -100,21 +100,25 @@ const IngredientsShowcase = () => {
                 <div className={`absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent transition-opacity duration-700
                   ${isActive ? 'opacity-90' : 'opacity-70 group-hover:opacity-90'}
                 `} />
-                <div className={`absolute inset-0 bg-gradient-to-tr ${ing.color} to-transparent transition-opacity duration-1000
-                  ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
-                `} />
+                {!isMobile && (
+                  <div className={`absolute inset-0 bg-gradient-to-tr ${ing.color} to-transparent transition-opacity duration-1000
+                    ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
+                  `} />
+                )}
                 
                 {/* Content Overlay */}
                 <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end">
-                  <m.div 
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    transition={{ delay: 0.5 + i * 0.1, duration: 1 }}
-                    className="h-[1px] w-12 bg-yellow-400 origin-left mb-6" 
-                  />
+                  {!isMobile && (
+                    <m.div 
+                      initial={{ scaleX: 0 }}
+                      whileInView={{ scaleX: 1 }}
+                      transition={{ delay: 0.5 + i * 0.1, duration: 1 }}
+                      className="h-[1px] w-12 bg-yellow-400 origin-left mb-6" 
+                    />
+                  )}
                   
                   <div 
-                    className={`space-y-4 transition-transform duration-700
+                    className={`space-y-4 transition-transform duration-500
                       ${isActive ? '-translate-y-2' : 'group-hover:-translate-y-2'}
                     `}
                   >
@@ -129,7 +133,7 @@ const IngredientsShowcase = () => {
                     
                     <div className="overflow-hidden">
                       <p 
-                        className={`text-white/60 text-xs md:text-sm font-body font-medium leading-relaxed transition-transform duration-500 delay-100
+                        className={`text-white/60 text-xs md:text-sm font-body font-medium leading-relaxed transition-transform duration-300
                           ${isActive ? 'translate-y-0' : 'translate-y-full group-hover:translate-y-0'}
                         `}
                       >
@@ -148,13 +152,14 @@ const IngredientsShowcase = () => {
                 </div>
                 
                 {/* Mobile Active Pulse */}
-                {isActive && window.innerWidth < 1024 && (
-                  <div className="absolute top-8 right-8 w-2 h-2 bg-yellow-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(250,204,21,0.5)]" />
+                {isActive && isMobile && (
+                  <div className="absolute top-8 right-8 w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
                 )}
               </m.div>
             );
           })}
         </m.div>
+
       </div>
     </section>
   );

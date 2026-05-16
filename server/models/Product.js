@@ -16,7 +16,9 @@ const productSchema = new mongoose.Schema(
     category: { type: String, default: "Spices" },
     sizes: [sizeSchema], // array of weight/price objects
     image: { type: String, required: true },
+    stock: { type: Number, default: 0 },
     inStock: { type: Boolean, default: true },
+
   },
   {
     timestamps: true,

@@ -32,6 +32,16 @@ export const createCODOrder = async (req, res) => {
         .json({ message: "All address fields are required" });
     }
 
+    // Check stock for each product
+    for (const item of items) {
+      const product = await Product.findById(item.product);
+      if (!product || product.stock < item.qty) {
+        return res.status(400).json({ 
+          message: `Insufficient stock for ${product ? product.name : 'one or more products'}` 
+        });
+      }
+    }
+
     const order = new Order({
       user: req.user.id,
       items,
@@ -69,6 +79,16 @@ export const createOnlineOrder = async (req, res) => {
         .json({ message: "All address fields are required" });
     }
 
+    // Check stock for each product
+    for (const item of items) {
+      const product = await Product.findById(item.product);
+      if (!product || product.stock < item.qty) {
+        return res.status(400).json({ 
+          message: `Insufficient stock for ${product ? product.name : 'one or more products'}` 
+        });
+      }
+    }
+
     const razorpayOrder = await razorpay.orders.create({
       amount: totalAmount * 100,
       currency: "INR",
@@ -80,7 +100,7 @@ export const createOnlineOrder = async (req, res) => {
       items,
       totalAmount,
       shippingAddress,
-      paymentMethod: "ONLINE",
+      paymentMethod: "RAZORPAY", // Changed from ONLINE to match model
       paymentStatus: "unpaid",
       status: "pending",
       razorpayOrderId: razorpayOrder.id,
@@ -104,6 +124,7 @@ export const createOnlineOrder = async (req, res) => {
     res.status(500).json({ message: err.error?.description || err.message });
   }
 };
+
 
 // ---------------------------
 // Verify Online Payment

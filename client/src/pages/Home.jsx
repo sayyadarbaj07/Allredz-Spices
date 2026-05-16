@@ -104,12 +104,14 @@ const Hero = () => {
               <img
                 src={chikanmasala}
                 alt="Premium Indian Spices"
-                loading="lazy"
+                loading="eager"
+                fetchPriority="high"
                 decoding="async"
                 width={384}
                 height={600}
                 className="w-full h-full object-cover scale-105 md:group-hover:scale-125 transition-transform duration-[2s] ease-out"
               />
+
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
             </m.div>
           </div>

@@ -17,6 +17,7 @@ const AddProduct = () => {
     price: "",
     category: "Premium Blends",
     image: null,
+    stock: 0,
   });
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState(null);
@@ -41,6 +42,7 @@ const AddProduct = () => {
     productData.append("name", formData.name);
     productData.append("description", formData.description);
     productData.append("category", formData.category);
+    productData.append("stock", formData.stock);
     productData.append("sizes", JSON.stringify([{ weight: formData.weight, price: Number(formData.price) }]));
     productData.append("image", formData.image);
 
@@ -189,6 +191,21 @@ const AddProduct = () => {
                   value={formData.price}
                   onChange={handleChange}
                   placeholder="0.00"
+                  className="w-full bg-gray-50 border-none rounded-2xl p-6 text-sm font-bold focus:ring-2 focus:ring-brand-red/20 transition-all outline-none"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 ml-2 flex items-center gap-2">
+                  <Package size={12} /> Inventory Stock
+                </label>
+                <input
+                  type="number"
+                  name="stock"
+                  value={formData.stock}
+                  onChange={handleChange}
+                  placeholder="0"
                   className="w-full bg-gray-50 border-none rounded-2xl p-6 text-sm font-bold focus:ring-2 focus:ring-brand-red/20 transition-all outline-none"
                   required
                 />

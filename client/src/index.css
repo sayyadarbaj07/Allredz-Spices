@@ -141,17 +141,29 @@
 
     .luxury-card {
       will-change: auto; /* Fully disable will-change on mobile */
+      @apply shadow-md hover:shadow-lg rounded-[2rem]; /* Simplified shadows */
+      transition-duration: 300ms; /* Faster transitions */
     }
 
     .gpu-accelerated {
       will-change: auto;
+      transform: none; /* Avoid unnecessary layers if not needed */
     }
 
     .glow-text {
-      text-shadow: 0 0 10px rgba(217, 119, 6, 0.3);
+      text-shadow: none; /* Disable text-shadow on mobile */
+    }
+
+    .premium-button {
+      @apply shadow-md hover:shadow-md; /* Reduce shadow complexity */
+    }
+
+    .section-container {
+      @apply px-4; /* Ensure consistent padding */
     }
   }
 }
+
 
 .animate-float-slow {
   animation: float-slow 8s ease-in-out infinite;

@@ -25,13 +25,14 @@ const orderSchema = new mongoose.Schema(
     },
 
     shippingAddress: {
-      name: String,
+      fullName: String,
       phone: String,
-      street: String,
+      address: String,
       city: String,
       state: String,
       pincode: String,
     },
+
 
     paymentMethod: { type: String, enum: ["COD", "RAZORPAY"], default: "COD" },
 
