@@ -1,32 +1,27 @@
-import React, { useRef, useMemo } from "react";
-import { useInView } from "framer-motion";
+import React from "react";
 
 /**
  * LazySection Wrapper
- * Only renders its children when they enter the viewport.
- * Helps reduce initial DOM size and improves scroll performance.
+ * Renders its children statically to prevent dynamic mounting during scroll.
+ * Uses CSS content-visibility to defer layout and paint for offscreen elements.
  */
-const LazySection = ({ children, height = "400px", offset = "300px" }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { 
-    once: true, 
-    margin: `0px 0px ${offset} 0px` 
-  });
-
+const LazySection = ({ children, height = "400px" }) => {
   const style = {
-    minHeight: height,
+    contentVisibility: "auto",
+    containIntrinsicSize: `auto ${height}`,
     width: "100%",
     position: "relative",
   };
 
   return (
-    <div ref={ref} style={style}>
-      {isInView ? children : null}
+    <div style={style} className="lazy-section">
+      {children}
     </div>
   );
 };
 
 export default React.memo(LazySection);
+
 
 
 

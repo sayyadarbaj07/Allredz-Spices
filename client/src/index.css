@@ -186,3 +186,9 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Performance optimizations for scroll containers */
+.lazy-section {
+  content-visibility: auto;
+  contain: layout style paint;
+}

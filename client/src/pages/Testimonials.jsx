@@ -67,9 +67,14 @@ const Testimonials = () => {
                     {[...Array(t.rating)].map((_, i) => (
                       <m.div
                         key={i}
-                        initial={{ opacity: 0, scale: 0 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.5 + i * 0.1 }}
+                        variants={{
+                          hidden: { opacity: 0, scale: 0 },
+                          visible: { 
+                            opacity: 1, 
+                            scale: 1,
+                            transition: { delay: 0.3 + i * 0.1 }
+                          }
+                        }}
                       >
                         <Star size={14} className="fill-yellow-400 text-yellow-400" />
                       </m.div>

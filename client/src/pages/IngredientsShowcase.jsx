@@ -110,9 +110,13 @@ const IngredientsShowcase = () => {
                 <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end">
                   {!isMobile && (
                     <m.div 
-                      initial={{ scaleX: 0 }}
-                      whileInView={{ scaleX: 1 }}
-                      transition={{ delay: 0.5 + i * 0.1, duration: 1 }}
+                      variants={{
+                        hidden: { scaleX: 0 },
+                        visible: { 
+                          scaleX: 1,
+                          transition: { delay: 0.5 + i * 0.1, duration: 1 }
+                        }
+                      }}
                       className="h-[1px] w-12 bg-yellow-400 origin-left mb-6" 
                     />
                   )}

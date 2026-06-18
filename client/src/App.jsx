@@ -79,16 +79,16 @@ const App = () => {
                   element={
                     <div className="flex flex-col">
                       <Home />
-                      <LazySection height="800px"><Products /></LazySection>
-                      <LazySection height="1200px"><SpiceProcess /></LazySection>
-                      <LazySection height="1600px"><IngredientsShowcase /></LazySection>
-                      <LazySection height="400px"><StatsCounter /></LazySection>
-                      <LazySection height="700px"><FounderMessage /></LazySection>
-                      <LazySection height="1500px"><Recipes /></LazySection>
-                      <LazySection height="600px"><Testimonials /></LazySection>
-                      <LazySection height="600px"><FAQ /></LazySection>
-                      <LazySection height="800px"><AboutUs /></LazySection>
-                      <LazySection height="800px"><Contact /></LazySection>
+                      <LazySection height="1200px"><Products /></LazySection>
+                      <LazySection height="850px"><SpiceProcess /></LazySection>
+                      <LazySection height="1000px"><IngredientsShowcase /></LazySection>
+                      <LazySection height="320px"><StatsCounter /></LazySection>
+                      <LazySection height="800px"><FounderMessage /></LazySection>
+                      <LazySection height="1100px"><Recipes /></LazySection>
+                      <LazySection height="800px"><Testimonials /></LazySection>
+                      <LazySection height="850px"><FAQ /></LazySection>
+                      <LazySection height="2600px"><AboutUs /></LazySection>
+                      <LazySection height="1400px"><Contact /></LazySection>
                     </div>
                   }
                 />
